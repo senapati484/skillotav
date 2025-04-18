@@ -104,7 +104,7 @@ const Header = () => {
   return (
     <>
       {pathname === "/authentication" ? null : (
-        <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background">
+        <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 z-50 bg-background">
           <div className="flex gap-3">
             <div className="flex justify-center items-center text-4xl font-extrabold dark:invert">
               SKILLOTAV
@@ -175,7 +175,7 @@ const Header = () => {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/authentication">
+                    <Link href="https://ui.shadcn.com/docs">
                       <NavigationMenuLink
                         className={navigationMenuTriggerStyle()}
                       >
@@ -188,9 +188,6 @@ const Header = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <Link href="/authentication">
-              <Button>Login / Signup</Button>
-            </Link>
             {/* dark mode/light mode */}
             <Button
               onClick={toggleTheme}
@@ -200,6 +197,10 @@ const Header = () => {
             >
               {isDark ? <LuMoon /> : <LuSun />}
             </Button>
+            {/* login signup */}
+            <Link href="/authentication">
+              <Button>Login / Signup</Button>
+            </Link>
           </div>
         </div>
       )}
