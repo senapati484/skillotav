@@ -119,21 +119,22 @@ const Header = () => {
                     <NavigationMenuContent>
                       <ul className="grid w-[500px] gap-3 p-2 lg:grid-cols-[.75fr_1fr]">
                         <li className="row-span-3">
-                          <NavigationMenuLink asChild>
-                            <a
-                              className="flex h-full w-full select-none flex-col justify-end rounded-base p-6 no-underline outline-hidden"
-                              href="https://ui.shadcn.com"
-                            >
-                              <div className="mb-2 mt-4 text-lg font-heading">
-                                shadcn/ui
-                              </div>
-                              <p className="text-sm font-base leading-tight">
-                                Beautifully designed components that you can
-                                copy and paste into your apps. Accessible.
-                                Customizable. Open Source.
-                              </p>
-                            </a>
-                          </NavigationMenuLink>
+                          <div
+                            className="flex h-full w-full select-none flex-col justify-end rounded-base p-6 no-underline outline-hidden"
+                            style={{
+                              backgroundImage:
+                                "linear-gradient(to bottom right, var(--main), 40%, var(--primary))",
+                            }}
+                          >
+                            <div className="mb-2 mt-4 text-lg font-heading">
+                              shadcn/ui
+                            </div>
+                            <p className="text-sm font-base leading-tight">
+                              Beautifully designed components that you can copy
+                              and paste into your apps. Accessible.
+                              Customizable. Open Source.
+                            </p>
+                          </div>
                         </li>
                         <ListItem
                           href="https://ui.shadcn.com/docs"
@@ -174,11 +175,7 @@ const Header = () => {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link
-                      href="https://ui.shadcn.com/docs"
-                      legacyBehavior
-                      passHref
-                    >
+                    <Link href="/authentication">
                       <NavigationMenuLink
                         className={navigationMenuTriggerStyle()}
                       >
@@ -210,23 +207,21 @@ const Header = () => {
   );
 };
 
-function ListItem({ className, title, children, ...props }) {
+function ListItem({ className, title, children, href, ...props }) {
   return (
     <li>
-      <NavigationMenuLink asChild>
-        <a
+      <Link href={href} passHref legacyBehavior>
+        <NavigationMenuLink
           className={cn(
             "hover:bg-accent block text-main-foreground select-none space-y-1 rounded-base border-2 border-transparent p-3 leading-none no-underline outline-hidden transition-colors hover:border-border",
             className
           )}
           {...props}
         >
-          <div className="text-base font-heading leading-none">{title}</div>
-          <p className="font-base line-clamp-2 text-sm leading-snug">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
+          <div className="text-base font-bold leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug">{children}</p>
+        </NavigationMenuLink>
+      </Link>
     </li>
   );
 }
