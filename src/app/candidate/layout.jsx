@@ -12,7 +12,7 @@ import {
 export default function CandidateLayout({ children }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b">
+      {/* <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/candidate/dashboard" className="text-2xl font-bold">
             SkillChain
@@ -47,8 +47,9 @@ export default function CandidateLayout({ children }) {
         </div>
       </header>
       <div className="container mx-auto px-4 py-4">
-        <CandidateNav />
-      </div>
+      <CandidateNav />
+      </div> */}
+      <CandidateNav />
       <main className="flex-1 container mx-auto px-4 py-6">{children}</main>
       {/* <footer className="border-t py-6">
         <div

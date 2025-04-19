@@ -12,7 +12,7 @@ import {
 export default function RecruiterLayout({ children }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b">
+      {/* <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/recruiter/dashboard" className="text-2xl font-bold">
             SkillChain
@@ -48,7 +48,8 @@ export default function RecruiterLayout({ children }) {
       </header>
       <div className="container mx-auto px-4 py-4">
         <RecruiterNav />
-      </div>
+      </div> */}
+      <RecruiterNav />
       <main className="flex-1 container mx-auto px-4 py-6">{children}</main>
       {/* <footer className="border-t py-6">
         <div

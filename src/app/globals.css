@@ -23,7 +23,6 @@ body {
   --font-clash: "ClashDisplay-Regular", "Clash Display", Arial, sans-serif;
 }
 
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -77,4 +76,30 @@ body {
 
 .no-visible-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee2 {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee2 {
+  animation: marquee2 25s linear infinite;
 }

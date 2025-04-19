@@ -1,16 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, MapPin, Building, Clock, Briefcase } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search, MapPin, Building, Clock, Briefcase } from "lucide-react";
 
 export default function OpportunitiesPage() {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Sample job opportunities
   const opportunities = [
@@ -132,23 +138,27 @@ export default function OpportunitiesPage() {
       ],
       match: 95,
     },
-  ]
+  ];
 
   // Filter opportunities based on search term
-  const filteredOpportunities = opportunities.filter((job) =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.location.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredOpportunities = opportunities.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Opportunities</h1>
-        <p className="text-muted-foreground">Find job opportunities that match your token profile</p>
+        <h1 className="text-3xl font-clash font-bold">Opportunities</h1>
+        <p className="text-muted-foreground font-satoshi">
+          Find job opportunities that match your token profile
+        </p>
       </div>
-      <Card>
+      <Card className="border-2 border-border shadow-shadow">
         <CardHeader>
-          <CardTitle>Search & Filter</CardTitle>
+          <CardTitle className="font-clash">Search & Filter</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col md:flex-row gap-4">
@@ -156,12 +166,13 @@ export default function OpportunitiesPage() {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search by title, company, or location"
-                className="pl-8"
+                className="pl-8 border-2 border-border"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)} />
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
             <Select>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-[180px] border-2 border-border">
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
@@ -173,7 +184,7 @@ export default function OpportunitiesPage() {
               </SelectContent>
             </Select>
             <Select>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-[180px] border-2 border-border">
                 <SelectValue placeholder="Token Match" />
               </SelectTrigger>
               <SelectContent>
@@ -184,33 +195,39 @@ export default function OpportunitiesPage() {
                 <SelectItem value="60">60%+ Match</SelectItem>
               </SelectContent>
             </Select>
-            <Button>Filter</Button>
+            <Button className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all">
+              Filter
+            </Button>
           </div>
         </CardContent>
       </Card>
       <div className="space-y-6">
         {filteredOpportunities.map((job) => (
-          <Card key={job.id} className="overflow-hidden">
+          <Card
+            key={job.id}
+            className="overflow-hidden border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all cursor-pointer"
+          >
             <div className="flex flex-col md:flex-row">
-              <div className="md:w-1/3 lg:w-1/4 relative h-48 md:h-auto">
+              <div className="md:w-1/3 lg:w-1/4 relative h-48 md:h-auto border-r-2 border-border">
                 <Image
                   src={job.imageUrl || "/placeholder.svg"}
                   alt={job.company}
                   fill
-                  className="object-cover" />
+                  className="object-cover"
+                />
               </div>
               <div className="flex-1 p-6">
                 <div className="flex flex-col md:flex-row justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-xl">{job.title}</h3>
-                      <span
-                        className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800">
+                      <h3 className="font-clash font-bold text-xl">
+                        {job.title}
+                      </h3>
+                      <span className="inline-flex items-center rounded-base px-2.5 py-0.5 text-xs font-medium bg-main/10 text-main border-2 border-border">
                         {job.match}% Match
                       </span>
                     </div>
-                    <div
-                      className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground mb-4">
+                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground font-satoshi mb-4">
                       <div className="flex items-center gap-1">
                         <Building className="h-4 w-4" />
                         <span>{job.company}</span>
@@ -228,35 +245,56 @@ export default function OpportunitiesPage() {
                         <span>Posted {job.posted}</span>
                       </div>
                     </div>
-                    <p className="text-sm mb-4 line-clamp-2">{job.description}</p>
+                    <p className="text-sm mb-4 line-clamp-2 font-satoshi">
+                      {job.description}
+                    </p>
                     <div className="mb-4">
-                      <p className="text-sm font-medium mb-2">Requirements:</p>
-                      <ul className="text-sm list-disc pl-5 space-y-1">
+                      <p className="text-sm font-clash font-medium mb-2">
+                        Requirements:
+                      </p>
+                      <ul className="text-sm list-disc pl-5 space-y-1 font-satoshi">
                         {job.requirements.slice(0, 2).map((req, i) => (
                           <li key={i}>{req}</li>
                         ))}
-                        {job.requirements.length > 2 && <li>+ {job.requirements.length - 2} more</li>}
+                        {job.requirements.length > 2 && (
+                          <li>+ {job.requirements.length - 2} more</li>
+                        )}
                       </ul>
                     </div>
                   </div>
                   <div className="flex flex-row md:flex-col gap-2 min-w-[120px]">
-                    <Button asChild>
-                      <Link href={`/candidate/opportunities/${job.id}`}>View Details</Link>
+                    <Button
+                      asChild
+                      className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+                    >
+                      <Link href={`/candidate/opportunities/${job.id}`}>
+                        View Details
+                      </Link>
                     </Button>
-                    <Button variant="outline">Apply Now</Button>
+                    <Button
+                      variant="outline"
+                      className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+                    >
+                      Apply Now
+                    </Button>
                   </div>
                 </div>
-                <div className="mt-4 pt-4 border-t">
-                  <p className="text-sm mb-2">Required tokens:</p>
+                <div className="mt-4 pt-4 border-t-2 border-border">
+                  <p className="text-sm mb-2 font-clash">Required tokens:</p>
                   <div className="flex flex-wrap gap-4">
                     {job.tokens.map((token, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <div
-                          className="w-6 h-6 rounded-full flex items-center justify-center"
-                          style={{ backgroundColor: token.color }}>
-                          <span className="text-white text-xs">{token.required}</span>
+                          className="w-6 h-6 rounded-base flex items-center justify-center border-2 border-border"
+                          style={{ backgroundColor: token.color }}
+                        >
+                          <span className="text-white text-xs">
+                            {token.required}
+                          </span>
                         </div>
-                        <span className="text-xs">{token.category}</span>
+                        <span className="text-xs font-satoshi">
+                          {token.category}
+                        </span>
                       </div>
                     ))}
                   </div>

@@ -171,7 +171,7 @@ const Header = () => {
         </div> */}
       </div>
       <div className="flex gap-3">
-        <Link href="/authentication">
+        <Link href="/auth/login">
           <Button>Login / Signup</Button>
         </Link>
       </div>

@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import AnimatedFeatureGrid from "@/components/AnimatedFeatureGrid";
 import { TabsDemo } from "@/components/TabsSection";
 import FlowingMenu from "@/components/ui/flowingmenu";
+import Marquee from "@/components/ui/marquee";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import {
@@ -15,6 +16,16 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import Header from "@/components/Header";
+
+const marqueeItems = [
+  "Find Your Dream Tech Role 🚀",
+  "Connect with Top Companies 🌟",
+  "Showcase Your Skills 💻",
+  "Build Your Career 📈",
+  "Join Tech Communities 🤝",
+  "Get Hired Fast ⚡",
+];
 
 const demoItems = [
   {
@@ -42,6 +53,7 @@ const demoItems = [
 export default function Home() {
   return (
     <>
+      <Header />
       {/* Geometric Pattern Background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute inset-0 bg-grid-black/[0.05] -z-10 bg-[length:50px_50px]" />
@@ -52,6 +64,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative z-10 min-h-screen flex items-center justify-center">
         <HeroSection />
+      </section>
+
+      {/* Marquee Section */}
+      <section className="relative z-20">
+        <Marquee items={marqueeItems} />
       </section>
 
       {/* Animated Feature Grid Section */}

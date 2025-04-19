@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background min-h-screen transition-colors`}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
-          <Header />
+          {/* <Header /> */}
           {children}
           <Toaster />
           <Footer />
