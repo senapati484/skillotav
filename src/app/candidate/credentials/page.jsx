@@ -20,6 +20,59 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Sample data - in a real app, this would come from an API
+const pendingCredentials = [
+  {
+    id: 1,
+    title: "Bachelor of Computer Science",
+    issuer: "University of Technology",
+  },
+  {
+    id: 2,
+    title: "Advanced JavaScript Certificate",
+    issuer: "Tech Academy",
+  },
+];
+
+const categories = [
+  {
+    name: "Academic Qualifications",
+    description: "Your verified degrees and certifications",
+    credentials: [
+      {
+        id: 1,
+        title: "Master of Business Administration",
+        issuer: "Business School",
+        date: "2023-12-15",
+      },
+      {
+        id: 2,
+        title: "Bachelor of Engineering",
+        issuer: "Tech University",
+        date: "2021-06-30",
+      },
+    ],
+  },
+  {
+    name: "Professional Certifications",
+    description: "Your industry certifications and achievements",
+    credentials: [
+      {
+        id: 3,
+        title: "Project Management Professional (PMP)",
+        issuer: "PMI",
+        date: "2024-01-20",
+      },
+      {
+        id: 4,
+        title: "AWS Certified Solutions Architect",
+        issuer: "Amazon Web Services",
+        date: "2023-11-10",
+      },
+    ],
+  },
+];
+
 export default function CredentialsPage() {
   const [activeTab, setActiveTab] = useState("academic");
 

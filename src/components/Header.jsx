@@ -1,22 +1,9 @@
 "use client";
 
 import React from "react";
-import { Button } from "./ui/button";
 import Link from "next/link";
-
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-
-import { cn } from "@/lib/utils";
-
-// import { LuSun, LuMoon } from "react-icons/lu";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 
 const components = [
   {
@@ -57,33 +44,7 @@ const components = [
 ];
 
 const Header = () => {
-  const [isDark, setIsDark] = React.useState(false);
-
-  // On mount, check localStorage and html class
-  React.useEffect(() => {
-    const storedTheme =
-      typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-    const html =
-      typeof window !== "undefined" ? window.document.documentElement : null;
-    if (storedTheme === "dark") {
-      setIsDark(true);
-      html?.classList.add("dark");
-    } else if (storedTheme === "light") {
-      setIsDark(false);
-      html?.classList.remove("dark");
-    } else {
-      // Default: match system
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDark(prefersDark);
-      if (prefersDark) {
-        html?.classList.add("dark");
-      } else {
-        html?.classList.remove("dark");
-      }
-    }
-  }, []);
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background/80 backdrop-blur-sm z-[100]">
@@ -91,111 +52,41 @@ const Header = () => {
         <div className="flex justify-center items-center text-4xl font-extrabold dark:invert">
           SKILLOTAV
         </div>
-        {/* <div className="flex justify-center gap-5">
-          <NavigationMenu className="z-[110] bg-transparent border-none">
-            <NavigationMenuList>
-              <NavigationMenuItem className="sm:block hidden">
-                <NavigationMenuTrigger className=" bg-transparent">
-                  Getting started
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-white/30 backdrop-blur-sm z-[120]">
-                  <ul className="grid w-[500px] gap-3 p-2 lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <div
-                        className="flex h-full w-full select-none flex-col justify-end rounded-base p-6 no-underline outline-hidden"
-                        style={{
-                          backgroundImage:
-                            "linear-gradient(to bottom right, var(--main), 40%, var(--primary))",
-                        }}
-                      >
-                        <div className="mb-2 mt-4 text-lg font-heading">
-                          shadcn/ui
-                        </div>
-                        <p className="text-sm font-base leading-tight">
-                          Beautifully designed components that you can copy and
-                          paste into your apps. Accessible. Customizable. Open
-                          Source.
-                        </p>
-                      </div>
-                    </li>
-                    <ListItem
-                      href="https://ui.shadcn.com/docs"
-                      title="Introduction"
-                    >
-                      Re-usable components built using Radix UI and Tailwind
-                      CSS.
-                    </ListItem>
-                    <ListItem
-                      href="https://ui.shadcn.com/docs/installation"
-                      title="Installation"
-                    >
-                      How to install dependencies and structure your app.
-                    </ListItem>
-                    <ListItem
-                      href="https://ui.shadcn.com/docs/primitives/typography"
-                      title="Typography"
-                    >
-                      Styles for headings, paragraphs, lists...etc
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className=" bg-transparent">
-                  Components
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="z-[120]">
-                  <ul className="grid w-[400px] gap-3 p-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {components.map((component) => (
-                      <ListItem
-                        key={component.title}
-                        title={component.title}
-                        href={component.href}
-                      >
-                        {component.description}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/authentication"
-                  className={cn(navigationMenuTriggerStyle(), "bg-transparent")}
-                >
-                  Documentation
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div> */}
       </div>
-      <div className="flex gap-3">
-        <Link href="/auth/login">
-          <Button>Login / Signup</Button>
-        </Link>
+      <div className="flex gap-4 items-center">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d={
+                theme === "dark"
+                  ? "M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                  : "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+              }
+            />
+          </svg>
+        </Button>
+        <Button
+          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+          asChild
+        >
+          <Link href="/auth/login">Sign in</Link>
+        </Button>
       </div>
     </div>
   );
 };
-
-function ListItem({ className, title, children, href, ...props }) {
-  return (
-    <li>
-      <Link href={href} passHref legacyBehavior>
-        <NavigationMenuLink
-          className={cn(
-            "hover:bg-accent block text-main-foreground select-none space-y-1 rounded-base border-2 border-transparent p-3 leading-none no-underline outline-hidden transition-colors hover:border-border",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-base font-bold leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug">{children}</p>
-        </NavigationMenuLink>
-      </Link>
-    </li>
-  );
-}
 
 export default Header;
