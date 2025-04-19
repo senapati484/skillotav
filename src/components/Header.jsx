@@ -17,7 +17,7 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import { LuSun, LuMoon } from "react-icons/lu";
+// import { LuSun, LuMoon } from "react-icons/lu";
 
 const components = [
   {
@@ -104,19 +104,19 @@ const Header = () => {
   return (
     <>
       {pathname === "/authentication" ? null : (
-        <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background">
+        <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background/80 backdrop-blur-sm z-[100]">
           <div className="flex gap-3">
             <div className="flex justify-center items-center text-4xl font-extrabold dark:invert">
               SKILLOTAV
             </div>
             <div className="flex justify-center gap-5">
-              <NavigationMenu className="z-5 ">
+              <NavigationMenu className="z-[110] bg-transparent border-none">
                 <NavigationMenuList>
                   <NavigationMenuItem className="sm:block hidden">
-                    <NavigationMenuTrigger>
+                    <NavigationMenuTrigger className=" bg-transparent">
                       Getting started
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
+                    <NavigationMenuContent className="bg-white/30 backdrop-blur-sm z-[120]">
                       <ul className="grid w-[500px] gap-3 p-2 lg:grid-cols-[.75fr_1fr]">
                         <li className="row-span-3">
                           <div
@@ -159,8 +159,10 @@ const Header = () => {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-                    <NavigationMenuContent>
+                    <NavigationMenuTrigger className=" bg-transparent">
+                      Components
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent className="z-[120]">
                       <ul className="grid w-[400px] gap-3 p-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                         {components.map((component) => (
                           <ListItem
@@ -175,13 +177,12 @@ const Header = () => {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/authentication">
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}
-                      >
-                        Documentation
-                      </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuLink
+                      href="/authentication"
+                      className="navigationMenuTriggerStyle() bg-transparent"
+                    >
+                      Documentation
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
@@ -192,14 +193,14 @@ const Header = () => {
               <Button>Login / Signup</Button>
             </Link>
             {/* dark mode/light mode */}
-            <Button
+            {/* <Button
               onClick={toggleTheme}
               aria-label={
                 isDark ? "Switch to light mode" : "Switch to dark mode"
               }
             >
               {isDark ? <LuMoon /> : <LuSun />}
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}

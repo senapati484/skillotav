@@ -1,6 +1,29 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Import custom font definitions */
+@import "../styles/clash-display.css";
+@import "../styles/satoshi.css";
+
+html,
+body {
+  font-family: "Satoshi-Regular", "Satoshi", Arial, sans-serif;
+}
+
+.font-satoshi {
+  font-family: "Satoshi-Regular", "Satoshi", Arial, sans-serif !important;
+}
+
+.font-clash {
+  font-family: "ClashDisplay-Regular", "Clash Display", Arial, sans-serif !important;
+}
+
+:root {
+  --font-satoshi: "Satoshi-Regular", "Satoshi", Arial, sans-serif;
+  --font-clash: "ClashDisplay-Regular", "Clash Display", Arial, sans-serif;
+}
+
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -44,4 +67,14 @@
   --shadow-shadow: var(--shadow);
   --font-weight-base: 600;
   --font-weight-heading: 800;
+}
+
+.no-visible-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-visible-scrollbar::-webkit-scrollbar {
+  display: none;
 }
