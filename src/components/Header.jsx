@@ -1,9 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/components/provider/AuthProvider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   NavigationMenu,
@@ -59,10 +69,32 @@ const components = [
 
 const Header = () => {
   const pathname = usePathname();
-  const [isDark, setIsDark] = React.useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const { user, signOut } = useAuth();
+  const router = useRouter();
+
+  // Get user initials for the avatar fallback
+  const getUserInitials = () => {
+    if (!user || !user.displayName) return "U";
+    return user.displayName
+      .split(" ")
+      .map(name => name[0])
+      .join("")
+      .toUpperCase()
+      .substring(0, 2);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push("/authentication");
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
 
   // On mount, check localStorage and html class
-  React.useEffect(() => {
+  useEffect(() => {
     const storedTheme =
       typeof window !== "undefined" ? localStorage.getItem("theme") : null;
     const html =
@@ -189,9 +221,41 @@ const Header = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <Link href="/authentication">
-              <Button>Login / Signup</Button>
-            </Link>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="h-9 w-9 cursor-pointer border-2 border-primary">
+                    <AvatarImage src={user.photoURL || ""} alt={user.displayName || "User"} />
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      {getUserInitials()}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="z-[150]">
+                  <DropdownMenuLabel>
+                    {user.displayName || user.email}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings">Settings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/authentication">
+                <Button>Login / Signup</Button>
+              </Link>
+            )}
             {/* dark mode/light mode */}
             {/* <Button
               onClick={toggleTheme}
