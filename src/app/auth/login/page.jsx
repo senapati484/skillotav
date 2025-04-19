@@ -1,3 +1,4 @@
+// src/app/login/page.jsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -5,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -14,19 +16,47 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/components/provider/AuthProvider";
 
 export default function LoginPage() {
   const router = useRouter();
   const [userType, setUserType] = useState("candidate");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { signInWithGoogle, signInWithEmail } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // In a real app, we would authenticate the user here
-    // For this prototype, we'll just redirect to the appropriate dashboard
-    if (userType === "candidate") {
-      router.push("/candidate/dashboard");
-    } else {
-      router.push("/recruiter/dashboard");
+    setIsLoading(true);
+    try {
+      await signInWithEmail(email, password);
+      toast.success("Logged in successfully");
+      router.push(`/${userType}/dashboard`);
+    } catch (error) {
+      let errorMessage = "Login failed";
+      switch (error.code) {
+        case "auth/invalid-credential":
+          errorMessage = "Invalid email or password";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "User not found";
+          break;
+      }
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success("Google login successful");
+      router.push(`/${userType}/dashboard`);
+    } catch (error) {
+      toast.error("Google login failed");
     }
   };
 
@@ -48,34 +78,68 @@ export default function LoginPage() {
               <TabsTrigger value="recruiter">Recruiter</TabsTrigger>
             </TabsList>
 
-            <form onSubmit={handleLogin}>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="name@example.com"
-                    required
-                  />
+            <div className="space-y-4">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={handleGoogleLogin}
+                disabled={isLoading}
+              >
+                Continue with Google
+              </Button>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
-                    <Link
-                      href="/auth/forgot-password"
-                      className="text-sm text-primary hover:underline"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <Input id="password" type="password" required />
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with email
+                  </span>
                 </div>
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
               </div>
-            </form>
+
+              <form onSubmit={handleLogin}>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="name@example.com"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="password">Password</Label>
+                      <Link
+                        href="/auth/forgot-password"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        Forgot password?
+                      </Link>
+                    </div>
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Logging in..." : "Login"}
+                  </Button>
+                </div>
+              </form>
+            </div>
           </Tabs>
         </CardContent>
         <CardFooter className="flex justify-center">
