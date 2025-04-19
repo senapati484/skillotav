@@ -1,4 +1,3 @@
-// src/app/login/page.jsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -6,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -24,7 +22,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { signInWithGoogle, signInWithEmail } = useAuth();
 
   const handleLogin = async (e) => {
@@ -32,19 +30,9 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await signInWithEmail(email, password);
-      toast.success("Logged in successfully");
       router.push(`/${userType}/dashboard`);
     } catch (error) {
-      let errorMessage = "Login failed";
-      switch (error.code) {
-        case "auth/invalid-credential":
-          errorMessage = "Invalid email or password";
-          break;
-        case "auth/user-not-found":
-          errorMessage = "User not found";
-          break;
-      }
-      toast.error(errorMessage);
+      // Error is already handled in AuthProvider
     } finally {
       setIsLoading(false);
     }
@@ -53,10 +41,9 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
-      toast.success("Google login successful");
       router.push(`/${userType}/dashboard`);
     } catch (error) {
-      toast.error("Google login failed");
+      // Error is already handled in AuthProvider
     }
   };
 
@@ -79,8 +66,8 @@ export default function LoginPage() {
             </TabsList>
 
             <div className="space-y-4">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full"
                 onClick={handleGoogleLogin}
                 disabled={isLoading}
@@ -122,19 +109,15 @@ export default function LoginPage() {
                         Forgot password?
                       </Link>
                     </div>
-                    <Input 
-                      id="password" 
-                      type="password" 
+                    <Input
+                      id="password"
+                      type="password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    disabled={isLoading}
-                  >
+                  <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? "Logging in..." : "Login"}
                   </Button>
                 </div>

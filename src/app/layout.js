@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
+            {/* <Header /> */}
             <main className="flex-1">{children}</main>
             <Toaster position="top-center" richColors />
             <Footer />

@@ -1,4 +1,3 @@
-// src/app/register/page.jsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -30,7 +29,7 @@ export default function RegisterPage() {
   const [lastName, setLastName] = useState("");
   const [company, setCompany] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { signInWithGoogle, signUpWithEmail } = useAuth();
 
   const handleRegister = async (e) => {
@@ -42,25 +41,10 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await signUpWithEmail(
-        email,
-        password,
-        `${firstName} ${lastName}`
-      );
-      
-      toast.success("Account created successfully");
+      await signUpWithEmail(email, password, `${firstName} ${lastName}`);
       router.push(`/${userType}/dashboard`);
     } catch (error) {
-      let errorMessage = "Registration failed";
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          errorMessage = "Email already in use";
-          break;
-        case "auth/weak-password":
-          errorMessage = "Password should be at least 6 characters";
-          break;
-      }
-      toast.error(errorMessage);
+      // Error is already handled in AuthProvider
     } finally {
       setIsLoading(false);
     }
@@ -69,10 +53,9 @@ export default function RegisterPage() {
   const handleGoogleRegister = async () => {
     try {
       await signInWithGoogle();
-      toast.success("Google registration successful");
       router.push(`/${userType}/dashboard`);
     } catch (error) {
-      toast.error("Google registration failed");
+      // Error is already handled in AuthProvider
     }
   };
 
@@ -95,8 +78,8 @@ export default function RegisterPage() {
             </TabsList>
 
             <div className="space-y-4">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full"
                 onClick={handleGoogleRegister}
                 disabled={isLoading}
@@ -120,18 +103,18 @@ export default function RegisterPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="first-name">First Name</Label>
-                      <Input 
-                        id="first-name" 
-                        required 
+                      <Input
+                        id="first-name"
+                        required
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="last-name">Last Name</Label>
-                      <Input 
-                        id="last-name" 
-                        required 
+                      <Input
+                        id="last-name"
+                        required
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                       />
@@ -179,11 +162,7 @@ export default function RegisterPage() {
                       />
                     </div>
                   )}
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    disabled={isLoading}
-                  >
+                  <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? "Creating account..." : "Create Account"}
                   </Button>
                 </div>

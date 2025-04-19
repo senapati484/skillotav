@@ -1,3 +1,5 @@
+"use client";
+import { useAuth } from "@/components/provider/AuthProvider";
 import Link from "next/link";
 import {
   Card,
@@ -13,13 +15,15 @@ import { CheckCircle2, XCircle } from "lucide-react";
 import { TokenGrid } from "@/components/token-display";
 
 export default function CandidateProfilePage() {
-  // Sample profile data
+  const { user } = useAuth();
+
+  // Sample profile data - keeping other data static for now
   const profile = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    location: "New York, NY",
+    firstName: user?.displayName?.split(" ")[0] || "",
+    lastName: user?.displayName?.split(" ")[1] || "",
+    email: user?.email || "",
+    phone: "+1 (555) 123-4567", // This will remain static for now
+    location: "New York, NY", // This will remain static for now
     bio: "Frontend developer with 3 years of experience specializing in React and Next.js. Passionate about creating intuitive user interfaces and accessible web applications.",
     linkedin: "https://linkedin.com/in/johndoe",
     github: "https://github.com/johndoe",
@@ -56,6 +60,33 @@ export default function CandidateProfilePage() {
       { name: "TypeScript", level: "Intermediate", verified: true },
       { name: "CSS/SCSS", level: "Advanced", verified: false },
       { name: "Node.js", level: "Beginner", verified: false },
+    ],
+    extracurricular: [
+      {
+        title: "Student Council President",
+        organization: "University of Technology",
+        duration: "2021 - 2022",
+        description: "Led student initiatives and organized campus-wide events",
+        verified: true,
+        tokenValue: 3,
+      },
+      {
+        title: "Volunteer Teaching Assistant",
+        organization: "Code for Kids",
+        duration: "2020 - 2021",
+        description:
+          "Taught basic programming concepts to underprivileged children",
+        verified: true,
+        tokenValue: 2,
+      },
+      {
+        title: "Tech Community Lead",
+        organization: "Local Developer Meetup",
+        duration: "2022 - Present",
+        description: "Organizing monthly tech talks and workshops",
+        verified: false,
+        tokenValue: 2,
+      },
     ],
   };
 
@@ -141,12 +172,20 @@ export default function CandidateProfilePage() {
             View your personal information and credentials
           </p>
         </div>
-        <Button
-          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-          asChild
-        >
-          <Link href="/candidate/profile/edit">Edit Profile</Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+            asChild
+          >
+            <Link href="/candidate/profile/edit">Edit Profile</Link>
+          </Button>
+          <Button
+            className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+            asChild
+          >
+            <Link href="/candidate/profile/edit">Connect Wallet</Link>
+          </Button>
+        </div>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
@@ -154,13 +193,18 @@ export default function CandidateProfilePage() {
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <Avatar className="w-32 h-32 mb-4 border-2 border-border">
-                  <AvatarImage src="/placeholder.svg" alt="Profile" />
+                  <AvatarImage
+                    src={user?.photoURL || "/placeholder.svg"}
+                    alt="Profile"
+                  />
                   <AvatarFallback className="text-4xl font-clash">
-                    JD
+                    {`${profile.firstName?.[0] || ""}${
+                      profile.lastName?.[0] || ""
+                    }`}
                   </AvatarFallback>
                 </Avatar>
                 <h2 className="text-xl font-clash font-bold">
-                  {profile.firstName} {profile.lastName}
+                  {user?.displayName || "Loading..."}
                 </h2>
                 <p className="text-muted-foreground font-satoshi">
                   Frontend Developer
@@ -170,7 +214,7 @@ export default function CandidateProfilePage() {
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Email:</span>
                     <span className="text-muted-foreground">
-                      {profile.email}
+                      {user?.email || "Loading..."}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -231,7 +275,7 @@ export default function CandidateProfilePage() {
               <TabsTrigger value="education">Education</TabsTrigger>
               <TabsTrigger value="experience">Experience</TabsTrigger>
               <TabsTrigger value="skills">Skills</TabsTrigger>
-              <TabsTrigger value="tokens">Tokens</TabsTrigger>
+              <TabsTrigger value="extracurricular">Extracurricular</TabsTrigger>
             </TabsList>
 
             <TabsContent value="about" className="mt-6">
@@ -249,28 +293,80 @@ export default function CandidateProfilePage() {
               <Card className="border-2 border-border shadow-shadow">
                 <CardHeader>
                   <CardTitle className="font-clash">Education</CardTitle>
+                  <CardDescription className="font-satoshi">
+                    Your academic qualifications and achievements
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4 font-satoshi">
-                    {profile.education.map((edu, index) => (
-                      <div
-                        key={index}
-                        className="border-b-2 border-border pb-4 last:border-0 last:pb-0"
-                      >
-                        <div className="flex justify-between">
-                          <h3 className="font-clash font-semibold">
-                            {edu.degree}
-                          </h3>
-                          <VerificationBadge verified={edu.verified} />
+                  <div className="space-y-8">
+                    {/* Academic Token Summary */}
+                    <div className="p-4 border-2 border-border rounded-base bg-muted/10">
+                      <h3 className="font-clash font-semibold mb-4">
+                        Academic Tokens
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-10 h-10 rounded-base flex items-center justify-center border-2 border-border"
+                            style={{
+                              backgroundColor: "#ef4444",
+                              opacity: 0.5 + (85 / 100) * 0.5,
+                            }}
+                          >
+                            <span className="text-white font-bold">7</span>
+                          </div>
+                          <div>
+                            <p className="font-clash font-medium">
+                              Academic Score
+                            </p>
+                            <p className="text-sm text-muted-foreground font-satoshi">
+                              85% Quality
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-muted-foreground">
-                          {edu.institution}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {edu.year}
-                        </p>
+                        <div className="flex-1">
+                          <div className="flex flex-wrap gap-2">
+                            {allTokens
+                              .find((t) => t.category === "Academic")
+                              ?.microTokens.map((token, i) => (
+                                <div
+                                  key={i}
+                                  className="text-xs px-2 py-1 rounded-full bg-main/10 text-main border border-border"
+                                >
+                                  {token.name}: {token.value}%
+                                </div>
+                              ))}
+                          </div>
+                        </div>
                       </div>
-                    ))}
+                    </div>
+
+                    <div className="space-y-4">
+                      {profile.education.map((edu, index) => (
+                        <div
+                          key={index}
+                          className="border-b-2 border-border pb-4 last:border-0 last:pb-0"
+                        >
+                          <div className="flex justify-between">
+                            <h3 className="font-clash font-semibold">
+                              {edu.degree}
+                            </h3>
+                            <VerificationBadge verified={edu.verified} />
+                          </div>
+                          <p className="text-muted-foreground font-satoshi">
+                            {edu.institution}
+                          </p>
+                          <p className="text-sm text-muted-foreground font-satoshi">
+                            {edu.year}
+                          </p>
+                          <div className="mt-2">
+                            <p className="text-xs text-main">
+                              Token Value: +3 Academic Points
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -280,27 +376,83 @@ export default function CandidateProfilePage() {
               <Card className="border-2 border-border shadow-shadow">
                 <CardHeader>
                   <CardTitle className="font-clash">Work Experience</CardTitle>
+                  <CardDescription className="font-satoshi">
+                    Your professional experience and achievements
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {profile.experience.map((exp, index) => (
-                      <div
-                        key={index}
-                        className="border-b-2 border-border pb-4 last:border-0 last:pb-0"
-                      >
-                        <div className="flex justify-between">
-                          <h3 className="font-clash font-semibold">
-                            {exp.position}
-                          </h3>
-                          <VerificationBadge verified={exp.verified} />
+                  <div className="space-y-8">
+                    {/* Experience Token Summary */}
+                    <div className="p-4 border-2 border-border rounded-base bg-muted/10">
+                      <h3 className="font-clash font-semibold mb-4">
+                        Experience Tokens
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-10 h-10 rounded-base flex items-center justify-center border-2 border-border"
+                            style={{
+                              backgroundColor: "#22c55e",
+                              opacity: 0.5 + (80 / 100) * 0.5,
+                            }}
+                          >
+                            <span className="text-white font-bold">6</span>
+                          </div>
+                          <div>
+                            <p className="font-clash font-medium">
+                              Experience Score
+                            </p>
+                            <p className="text-sm text-muted-foreground font-satoshi">
+                              80% Quality
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-muted-foreground">{exp.company}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {exp.duration}
-                        </p>
-                        <p className="text-sm mt-2">{exp.description}</p>
+                        <div className="flex-1">
+                          <div className="flex flex-wrap gap-2">
+                            {allTokens
+                              .find((t) => t.category === "Experience")
+                              ?.microTokens.map((token, i) => (
+                                <div
+                                  key={i}
+                                  className="text-xs px-2 py-1 rounded-full bg-main/10 text-main border border-border"
+                                >
+                                  {token.name}: {token.value}%
+                                </div>
+                              ))}
+                          </div>
+                        </div>
                       </div>
-                    ))}
+                    </div>
+
+                    <div className="space-y-4">
+                      {profile.experience.map((exp, index) => (
+                        <div
+                          key={index}
+                          className="border-b-2 border-border pb-4 last:border-0 last:pb-0"
+                        >
+                          <div className="flex justify-between">
+                            <h3 className="font-clash font-semibold">
+                              {exp.position}
+                            </h3>
+                            <VerificationBadge verified={exp.verified} />
+                          </div>
+                          <p className="text-muted-foreground font-satoshi">
+                            {exp.company}
+                          </p>
+                          <p className="text-sm text-muted-foreground font-satoshi">
+                            {exp.duration}
+                          </p>
+                          <p className="text-sm mt-2 font-satoshi">
+                            {exp.description}
+                          </p>
+                          <div className="mt-2">
+                            <p className="text-xs text-main">
+                              Token Value: +2 Experience Points
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -310,130 +462,173 @@ export default function CandidateProfilePage() {
               <Card className="border-2 border-border shadow-shadow">
                 <CardHeader>
                   <CardTitle className="font-clash">Skills</CardTitle>
+                  <CardDescription className="font-satoshi">
+                    Your technical and professional skills
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {profile.skills.map((skill, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-between items-center border-b-2 border-border pb-3 last:border-0 last:pb-0"
-                      >
-                        <div>
-                          <h3 className="font-medium">{skill.name}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {skill.level}
-                          </p>
+                  <div className="space-y-8">
+                    {/* Skills Token Summary */}
+                    <div className="p-4 border-2 border-border rounded-base bg-muted/10">
+                      <h3 className="font-clash font-semibold mb-4">
+                        Skills Tokens
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-10 h-10 rounded-base flex items-center justify-center border-2 border-border"
+                            style={{
+                              backgroundColor: "#3b82f6",
+                              opacity: 0.5 + (75 / 100) * 0.5,
+                            }}
+                          >
+                            <span className="text-white font-bold">8</span>
+                          </div>
+                          <div>
+                            <p className="font-clash font-medium">
+                              Skills Score
+                            </p>
+                            <p className="text-sm text-muted-foreground font-satoshi">
+                              75% Quality
+                            </p>
+                          </div>
                         </div>
-                        <VerificationBadge verified={skill.verified} />
+                        <div className="flex-1">
+                          <div className="flex flex-wrap gap-2">
+                            {allTokens
+                              .find((t) => t.category === "Skills")
+                              ?.microTokens.map((token, i) => (
+                                <div
+                                  key={i}
+                                  className="text-xs px-2 py-1 rounded-full bg-main/10 text-main border border-border"
+                                >
+                                  {token.name}: {token.value}%
+                                </div>
+                              ))}
+                          </div>
+                        </div>
                       </div>
-                    ))}
+                    </div>
+
+                    <div className="space-y-4">
+                      {profile.skills.map((skill, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center border-b-2 border-border pb-3 last:border-0 last:pb-0"
+                        >
+                          <div>
+                            <h3 className="font-medium font-clash">
+                              {skill.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground font-satoshi">
+                              {skill.level}
+                            </p>
+                            <div className="mt-1">
+                              <p className="text-xs text-main">
+                                Token Value: +
+                                {skill.level === "Advanced"
+                                  ? "3"
+                                  : skill.level === "Intermediate"
+                                  ? "2"
+                                  : "1"}{" "}
+                                Skill Points
+                              </p>
+                            </div>
+                          </div>
+                          <VerificationBadge verified={skill.verified} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
 
-            <TabsContent value="tokens" className="mt-6">
+            <TabsContent value="extracurricular" className="mt-6">
               <Card className="border-2 border-border shadow-shadow">
                 <CardHeader>
-                  <CardTitle className="font-clash">Your Tokens</CardTitle>
+                  <CardTitle className="font-clash">
+                    Extracurricular Activities
+                  </CardTitle>
                   <CardDescription className="font-satoshi">
-                    Visualize your verified credentials as tokens
+                    Your leadership and community involvement
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <Tabs defaultValue="all">
-                      <TabsList className="grid grid-cols-5 w-full border-2 border-border">
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="academic">Academic</TabsTrigger>
-                        <TabsTrigger value="skills">Skills</TabsTrigger>
-                        <TabsTrigger value="experience">Experience</TabsTrigger>
-                        <TabsTrigger value="extracurricular">
-                          Extracurricular
-                        </TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="all" className="mt-6">
-                        <TokenGrid tokens={getFilteredTokens("all")} />
-                      </TabsContent>
-                      <TabsContent value="academic" className="mt-6">
-                        <TokenGrid tokens={getFilteredTokens("academic")} />
-                      </TabsContent>
-                      <TabsContent value="skills" className="mt-6">
-                        <TokenGrid tokens={getFilteredTokens("skills")} />
-                      </TabsContent>
-                      <TabsContent value="experience" className="mt-6">
-                        <TokenGrid tokens={getFilteredTokens("experience")} />
-                      </TabsContent>
-                      <TabsContent value="extracurricular" className="mt-6">
-                        <TokenGrid
-                          tokens={getFilteredTokens("extracurricular")}
-                        />
-                      </TabsContent>
-                    </Tabs>
+                  <div className="space-y-8">
+                    {/* Extracurricular Token Summary */}
+                    <div className="p-4 border-2 border-border rounded-base bg-muted/10">
+                      <h3 className="font-clash font-semibold mb-4">
+                        Extracurricular Tokens
+                      </h3>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-10 h-10 rounded-base flex items-center justify-center border-2 border-border"
+                            style={{
+                              backgroundColor: "#eab308",
+                              opacity: 0.5 + (70 / 100) * 0.5,
+                            }}
+                          >
+                            <span className="text-white font-bold">5</span>
+                          </div>
+                          <div>
+                            <p className="font-clash font-medium">
+                              Activity Score
+                            </p>
+                            <p className="text-sm text-muted-foreground font-satoshi">
+                              70% Quality
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex flex-wrap gap-2">
+                            {allTokens
+                              .find((t) => t.category === "Extracurricular")
+                              ?.microTokens.map((token, i) => (
+                                <div
+                                  key={i}
+                                  className="text-xs px-2 py-1 rounded-full bg-main/10 text-main border border-border"
+                                >
+                                  {token.name}: {token.value}%
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                    <Card className="border-2 border-border shadow-shadow">
-                      <CardHeader>
-                        <CardTitle className="font-clash">
-                          Token Growth Over Time
-                        </CardTitle>
-                        <CardDescription className="font-satoshi">
-                          Track how your tokens have grown as you add more
-                          credentials
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="h-80 flex items-center justify-center border-2 border-border rounded-md bg-muted/20">
+                    {/* Extracurricular Activities List */}
+                    <div className="space-y-4">
+                      {profile.extracurricular.map((activity, index) => (
+                        <div
+                          key={index}
+                          className="border-b-2 border-border pb-4 last:border-0 last:pb-0"
+                        >
+                          <div className="flex justify-between">
+                            <h3 className="font-clash font-semibold">
+                              {activity.title}
+                            </h3>
+                            <VerificationBadge verified={activity.verified} />
+                          </div>
                           <p className="text-muted-foreground font-satoshi">
-                            Token growth visualization would appear here
+                            {activity.organization}
                           </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="border-2 border-border shadow-shadow">
-                      <CardHeader>
-                        <CardTitle className="font-clash">
-                          Understanding Your Tokens
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4 font-satoshi">
-                          <div>
-                            <h3 className="font-clash font-semibold mb-2">
-                              Quantity Dimension
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              The number displayed on each token (1-10)
-                              represents the overall score in that domain. For
-                              example, a token with the number 7 indicates a 70%
-                              score in that domain.
-                            </p>
-                          </div>
-                          <div>
-                            <h3 className="font-clash font-semibold mb-2">
-                              Quality Dimension
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              The opacity/intensity of the token represents the
-                              quality of your achievements. Higher opacity
-                              indicates higher quality credentials in that
-                              domain.
-                            </p>
-                          </div>
-                          <div>
-                            <h3 className="font-clash font-semibold mb-2">
-                              Micro-tokens
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              Each main token is comprised of micro-tokens
-                              representing individual achievements. Click on a
-                              token to see its constituent micro-tokens and
-                              their individual scores.
+                          <p className="text-sm text-muted-foreground font-satoshi">
+                            {activity.duration}
+                          </p>
+                          <p className="text-sm mt-2 font-satoshi">
+                            {activity.description}
+                          </p>
+                          <div className="mt-2">
+                            <p className="text-xs text-main">
+                              Token Value: +{activity.tokenValue} Activity
+                              Points
                             </p>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
+                      ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
