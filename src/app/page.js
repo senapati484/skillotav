@@ -58,11 +58,11 @@ export default function Home() {
       <AnimatedFeatureGrid />
 
       {/* Flowing Menu Section */}
-      <section className="relative z-30 pt-14 bg-background">
+      {/* <section className="relative z-30 pt-14 bg-background">
         <div style={{ height: "400px", position: "relative" }}>
           <FlowingMenu items={demoItems} />
         </div>
-      </section>
+      </section> */}
 
       {/* Tabs Section (Demo) */}
       <section className="relative z-40 pt-30 pb-20 bg-secondary-background">
@@ -70,7 +70,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="relative z-50 py-20 bg-secondary-background">
+      {/* <section className="relative z-50 py-20 bg-secondary-background">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
           <p className="mb-6 text-muted-foreground">
@@ -83,7 +83,7 @@ export default function Home() {
             Email Us
           </a>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

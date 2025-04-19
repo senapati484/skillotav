@@ -11,7 +11,7 @@ import {
 
 export function TabsDemo() {
   return (
-    <div className="min-h-[600px] relative flex flex-col max-w-6xl mx-auto w-full items-center justify-start px-4">
+    <div className="min-h-[600px] relative flex flex-col max-w-6xl mx-auto w-full items-center justify-start px-4 bg-secondary-background">
       {/* <h2 className="text-3xl font-bold mb-8 text-center">
         Explore Our Platform
       </h2> */}

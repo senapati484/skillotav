@@ -50,12 +50,20 @@ const HeroSection = () => {
       </p>
 
       {/* CTA Button */}
-      <Button
-        className="mb-18 text-3xl py-7 px-6"
-        style={{ fontFamily: "ClashDisplay-Medium, sans-serif" }}
-      >
-        Get Started <LuArrowRight className="ml-2" />
-      </Button>
+      <div className="flex flex-row items-center justify-center mb-6">
+        <Button
+          className="mb-18 text-3xl py-7 px-6"
+          style={{ fontFamily: "ClashDisplay-Regular, sans-serif" }}
+        >
+          Join as Candidate <LuArrowRight className="ml-2" />
+        </Button>
+        <Button
+          className="mb-18 text-3xl py-7 px-6"
+          style={{ fontFamily: "ClashDisplay-Regular, sans-serif" }}
+        >
+          Join as Recruiter <LuArrowRight className="ml-2" />
+        </Button>
+      </div>
 
       {/* Features Section */}
       <div className="container mx-auto max-w-6xl px-4 grid grid-cols-1 md:grid-cols-3 gap-6">

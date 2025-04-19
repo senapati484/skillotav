@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Button } from "./ui/button";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import {
@@ -58,7 +57,6 @@ const components = [
 ];
 
 const Header = () => {
-  const pathname = usePathname();
   const [isDark, setIsDark] = React.useState(false);
 
   // On mount, check localStorage and html class
@@ -87,124 +85,97 @@ const Header = () => {
     }
   }, []);
 
-  // Toggle theme handler
-  const toggleTheme = () => {
-    const html = window.document.documentElement;
-    if (isDark) {
-      html.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDark(false);
-    } else {
-      html.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDark(true);
-    }
-  };
-
   return (
-    <>
-      {pathname === "/authentication" ? null : (
-        <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background/80 backdrop-blur-sm z-[100]">
-          <div className="flex gap-3">
-            <div className="flex justify-center items-center text-4xl font-extrabold dark:invert">
-              SKILLOTAV
-            </div>
-            <div className="flex justify-center gap-5">
-              <NavigationMenu className="z-[110] bg-transparent border-none">
-                <NavigationMenuList>
-                  <NavigationMenuItem className="sm:block hidden">
-                    <NavigationMenuTrigger className=" bg-transparent">
-                      Getting started
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="bg-white/30 backdrop-blur-sm z-[120]">
-                      <ul className="grid w-[500px] gap-3 p-2 lg:grid-cols-[.75fr_1fr]">
-                        <li className="row-span-3">
-                          <div
-                            className="flex h-full w-full select-none flex-col justify-end rounded-base p-6 no-underline outline-hidden"
-                            style={{
-                              backgroundImage:
-                                "linear-gradient(to bottom right, var(--main), 40%, var(--primary))",
-                            }}
-                          >
-                            <div className="mb-2 mt-4 text-lg font-heading">
-                              shadcn/ui
-                            </div>
-                            <p className="text-sm font-base leading-tight">
-                              Beautifully designed components that you can copy
-                              and paste into your apps. Accessible.
-                              Customizable. Open Source.
-                            </p>
-                          </div>
-                        </li>
-                        <ListItem
-                          href="https://ui.shadcn.com/docs"
-                          title="Introduction"
-                        >
-                          Re-usable components built using Radix UI and Tailwind
-                          CSS.
-                        </ListItem>
-                        <ListItem
-                          href="https://ui.shadcn.com/docs/installation"
-                          title="Installation"
-                        >
-                          How to install dependencies and structure your app.
-                        </ListItem>
-                        <ListItem
-                          href="https://ui.shadcn.com/docs/primitives/typography"
-                          title="Typography"
-                        >
-                          Styles for headings, paragraphs, lists...etc
-                        </ListItem>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className=" bg-transparent">
-                      Components
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="z-[120]">
-                      <ul className="grid w-[400px] gap-3 p-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                        {components.map((component) => (
-                          <ListItem
-                            key={component.title}
-                            title={component.title}
-                            href={component.href}
-                          >
-                            {component.description}
-                          </ListItem>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="/authentication"
-                      className="navigationMenuTriggerStyle() bg-transparent"
-                    >
-                      Documentation
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <Link href="/authentication">
-              <Button>Login / Signup</Button>
-            </Link>
-            {/* dark mode/light mode */}
-            {/* <Button
-              onClick={toggleTheme}
-              aria-label={
-                isDark ? "Switch to light mode" : "Switch to dark mode"
-              }
-            >
-              {isDark ? <LuMoon /> : <LuSun />}
-            </Button> */}
-          </div>
+    <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background/80 backdrop-blur-sm z-[100]">
+      <div className="flex gap-3">
+        <div className="flex justify-center items-center text-4xl font-extrabold dark:invert">
+          SKILLOTAV
         </div>
-      )}
-    </>
+        {/* <div className="flex justify-center gap-5">
+          <NavigationMenu className="z-[110] bg-transparent border-none">
+            <NavigationMenuList>
+              <NavigationMenuItem className="sm:block hidden">
+                <NavigationMenuTrigger className=" bg-transparent">
+                  Getting started
+                </NavigationMenuTrigger>
+                <NavigationMenuContent className="bg-white/30 backdrop-blur-sm z-[120]">
+                  <ul className="grid w-[500px] gap-3 p-2 lg:grid-cols-[.75fr_1fr]">
+                    <li className="row-span-3">
+                      <div
+                        className="flex h-full w-full select-none flex-col justify-end rounded-base p-6 no-underline outline-hidden"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(to bottom right, var(--main), 40%, var(--primary))",
+                        }}
+                      >
+                        <div className="mb-2 mt-4 text-lg font-heading">
+                          shadcn/ui
+                        </div>
+                        <p className="text-sm font-base leading-tight">
+                          Beautifully designed components that you can copy and
+                          paste into your apps. Accessible. Customizable. Open
+                          Source.
+                        </p>
+                      </div>
+                    </li>
+                    <ListItem
+                      href="https://ui.shadcn.com/docs"
+                      title="Introduction"
+                    >
+                      Re-usable components built using Radix UI and Tailwind
+                      CSS.
+                    </ListItem>
+                    <ListItem
+                      href="https://ui.shadcn.com/docs/installation"
+                      title="Installation"
+                    >
+                      How to install dependencies and structure your app.
+                    </ListItem>
+                    <ListItem
+                      href="https://ui.shadcn.com/docs/primitives/typography"
+                      title="Typography"
+                    >
+                      Styles for headings, paragraphs, lists...etc
+                    </ListItem>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className=" bg-transparent">
+                  Components
+                </NavigationMenuTrigger>
+                <NavigationMenuContent className="z-[120]">
+                  <ul className="grid w-[400px] gap-3 p-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                    {components.map((component) => (
+                      <ListItem
+                        key={component.title}
+                        title={component.title}
+                        href={component.href}
+                      >
+                        {component.description}
+                      </ListItem>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/authentication"
+                  className={cn(navigationMenuTriggerStyle(), "bg-transparent")}
+                >
+                  Documentation
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div> */}
+      </div>
+      <div className="flex gap-3">
+        <Link href="/authentication">
+          <Button>Login / Signup</Button>
+        </Link>
+      </div>
+    </div>
   );
 };
 
