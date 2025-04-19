@@ -61,13 +61,13 @@ export function RecruiterNav() {
       </header>
       <div className="container mx-auto px-4 py-4">
         <nav className="flex overflow-x-auto pb-2">
-          <div className="flex space-x-4">
+          <div className="flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap",
+                  "pr-6 py-2 text-sm text-md font-bold rounded-md whitespace-nowrap",
                   pathname === item.href
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"

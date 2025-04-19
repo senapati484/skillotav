@@ -1,6 +1,12 @@
-import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function RecruiterDashboard() {
   // Sample data for dashboard
@@ -9,7 +15,7 @@ export default function RecruiterDashboard() {
     activeJobs: 3,
     totalApplicants: 42,
     newApplicants: 12,
-  }
+  };
 
   // Sample recent applicants
   const recentApplicants = [
@@ -34,7 +40,7 @@ export default function RecruiterDashboard() {
       appliedDate: "2023-04-13",
       tokenMatch: 95,
     },
-  ]
+  ];
 
   // Sample job listings
   const jobListings = [
@@ -73,54 +79,76 @@ export default function RecruiterDashboard() {
       posted: "2023-03-01",
       status: "Closed",
     },
-  ]
+  ];
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Welcome, Acme Corp</h1>
-        <Button asChild>
+        <h1 className="text-3xl font-bold font-clash">Welcome, Acme Corp</h1>
+        <Button
+          asChild
+          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+        >
           <Link href="/recruiter/post-job">Post New Job</Link>
         </Button>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="border-2 border-border shadow-shadow">
           <CardContent className="p-6">
-            <div className="text-2xl font-bold">{metrics.postedJobs}</div>
-            <p className="text-sm text-muted-foreground">Posted Jobs</p>
+            <div className="text-2xl font-bold font-clash">
+              {metrics.postedJobs}
+            </div>
+            <p className="text-sm text-muted-foreground font-satoshi">
+              Posted Jobs
+            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-2 border-border shadow-shadow">
           <CardContent className="p-6">
-            <div className="text-2xl font-bold">{metrics.activeJobs}</div>
-            <p className="text-sm text-muted-foreground">Active Jobs</p>
+            <div className="text-2xl font-bold font-clash">
+              {metrics.activeJobs}
+            </div>
+            <p className="text-sm text-muted-foreground font-satoshi">
+              Active Jobs
+            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-2 border-border shadow-shadow">
           <CardContent className="p-6">
-            <div className="text-2xl font-bold">{metrics.totalApplicants}</div>
-            <p className="text-sm text-muted-foreground">Total Applicants</p>
+            <div className="text-2xl font-bold font-clash">
+              {metrics.totalApplicants}
+            </div>
+            <p className="text-sm text-muted-foreground font-satoshi">
+              Total Applicants
+            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-2 border-border shadow-shadow">
           <CardContent className="p-6">
-            <div className="text-2xl font-bold">{metrics.newApplicants}</div>
-            <p className="text-sm text-muted-foreground">New Applicants</p>
+            <div className="text-2xl font-bold font-clash">
+              {metrics.newApplicants}
+            </div>
+            <p className="text-sm text-muted-foreground font-satoshi">
+              New Applicants
+            </p>
           </CardContent>
         </Card>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="border-2 border-border shadow-shadow">
           <CardHeader>
-            <CardTitle>Recent Applicants</CardTitle>
-            <CardDescription>Candidates who recently applied to your job postings</CardDescription>
+            <CardTitle className="font-clash">Recent Applicants</CardTitle>
+            <CardDescription className="font-satoshi">
+              Candidates who recently applied to your job postings
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentApplicants.map((applicant) => (
                 <div
                   key={applicant.id}
-                  className="flex justify-between items-center border-b pb-4 last:border-0 last:pb-0">
+                  className="flex justify-between items-center border-b pb-4 last:border-0 last:pb-0"
+                >
                   <div>
                     <p className="font-medium">{applicant.name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -133,13 +161,16 @@ export default function RecruiterDashboard() {
                         applicant.tokenMatch >= 90
                           ? "bg-green-100 text-green-800"
                           : applicant.tokenMatch >= 70
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
-                      }`}>
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
                       {applicant.tokenMatch}% Match
                     </span>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href={`/recruiter/applicants/${applicant.id}`}>View</Link>
+                      <Link href={`/recruiter/applicants/${applicant.id}`}>
+                        View
+                      </Link>
                     </Button>
                   </div>
                 </div>
@@ -148,17 +179,20 @@ export default function RecruiterDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-2 border-border shadow-shadow">
           <CardHeader>
-            <CardTitle>Your Job Listings</CardTitle>
-            <CardDescription>Overview of your current and past job postings</CardDescription>
+            <CardTitle className="font-clash">Your Job Listings</CardTitle>
+            <CardDescription className="font-satoshi">
+              Overview of your current and past job postings
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {jobListings.map((job) => (
                 <div
                   key={job.id}
-                  className="flex justify-between items-center border-b pb-4 last:border-0 last:pb-0">
+                  className="flex justify-between items-center border-b pb-4 last:border-0 last:pb-0"
+                >
                   <div>
                     <p className="font-medium">{job.title}</p>
                     <p className="text-sm text-muted-foreground">
@@ -168,8 +202,11 @@ export default function RecruiterDashboard() {
                   <div className="flex items-center gap-2">
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        job.status === "Active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
-                      }`}>
+                        job.status === "Active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
                       {job.status}
                     </span>
                     <Button variant="outline" size="sm" asChild>
@@ -182,15 +219,18 @@ export default function RecruiterDashboard() {
           </CardContent>
         </Card>
       </div>
-      <Card>
+      <Card className="border-2 border-border shadow-shadow">
         <CardHeader>
-          <CardTitle>Token Match Analysis</CardTitle>
-          <CardDescription>Overview of token matches across all applicants</CardDescription>
+          <CardTitle className="font-clash">Token Match Analysis</CardTitle>
+          <CardDescription className="font-satoshi">
+            Overview of token matches across all applicants
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div
-            className="h-80 flex items-center justify-center border rounded-md bg-muted/20">
-            <p className="text-muted-foreground">Token match visualization would appear here</p>
+          <div className="h-80 flex items-center justify-center border rounded-md bg-muted/20">
+            <p className="text-muted-foreground">
+              Token match visualization would appear here
+            </p>
           </div>
         </CardContent>
       </Card>

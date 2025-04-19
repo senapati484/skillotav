@@ -27,7 +27,11 @@ export function CandidateNav() {
     <div className="">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/candidate/dashboard" className="text-2xl font-bold">
+          <Link
+            href="/candidate/dashboard"
+            className="text-2xl"
+            tyle={{ fontFamily: "ClashDisplay-Bold, sans-serif" }}
+          >
             SkillChain
           </Link>
           <DropdownMenu>
@@ -67,7 +71,7 @@ export function CandidateNav() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-3 py-2 text-md font-bold rounded-md whitespace-nowrap",
+                  "pr-6 py-2 text-md font-bold rounded-md whitespace-nowrap",
                   pathname === item.href
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
