@@ -19,6 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuth } from "@/components/provider/AuthProvider";
+import { ref, push, set } from "firebase/database";
+import { db } from "@/lib/firebase";
+import { toast } from "sonner";
 
 // Sample data - in a real app, this would come from an API
 const pendingCredentials = [
@@ -75,11 +79,98 @@ const categories = [
 
 export default function CredentialsPage() {
   const [activeTab, setActiveTab] = useState("academic");
+  const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real app, we would submit the form data to the server
-    alert("Credential submitted for verification!");
+    if (!user) {
+      toast.error("You must be logged in to submit credentials");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData(e.target);
+      const data = {
+        type: activeTab,
+        status: "pending",
+        submittedAt: new Date().toISOString(),
+        userId: user.uid,
+        // Common fields
+        title: formData.get(
+          activeTab === "academic"
+            ? "degree-type"
+            : activeTab === "skills"
+            ? "skill-name"
+            : activeTab === "experience"
+            ? "position"
+            : "role"
+        ),
+        organization: formData.get(
+          activeTab === "academic"
+            ? "institution"
+            : activeTab === "experience"
+            ? "company"
+            : "organization"
+        ),
+        startDate: formData.get(
+          activeTab === "academic"
+            ? "start-date"
+            : activeTab === "experience"
+            ? "exp-start-date"
+            : "activity-start-date"
+        ),
+        endDate: formData.get(
+          activeTab === "academic"
+            ? "end-date"
+            : activeTab === "experience"
+            ? "exp-end-date"
+            : "activity-end-date"
+        ),
+        description: formData.get(
+          activeTab === "skills"
+            ? "skill-description"
+            : activeTab === "experience"
+            ? "responsibilities"
+            : "activity-description"
+        ),
+
+        // Specific fields based on credential type
+        ...(activeTab === "academic" && {
+          field: formData.get("field"),
+          grade: formData.get("grade"),
+        }),
+        ...(activeTab === "skills" && {
+          skillType: formData.get("skill-type"),
+          proficiency: formData.get("proficiency"),
+          projectLinks: formData.get("project-links"),
+        }),
+        ...(activeTab === "experience" && {
+          achievements: formData.get("achievements"),
+          referenceContact: {
+            name: formData.get("reference-name"),
+            email: formData.get("reference-email"),
+          },
+        }),
+        ...(activeTab === "extracurricular" && {
+          activityType: formData.get("activity-type"),
+          impact: formData.get("impact"),
+        }),
+      };
+
+      const credentialsRef = ref(db, `credentials/${user.uid}`);
+      const newCredentialRef = push(credentialsRef);
+      await set(newCredentialRef, data);
+
+      toast.success("Credential submitted for verification!");
+      e.target.reset();
+    } catch (error) {
+      console.error("Error submitting credential:", error);
+      toast.error("Failed to submit credential");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

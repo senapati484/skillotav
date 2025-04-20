@@ -1,5 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/provider/AuthProvider";
+import { ref, onValue } from "firebase/database";
+import { db } from "@/lib/firebase";
 import Link from "next/link";
 import {
   Card,
@@ -16,127 +19,281 @@ import { TokenGrid } from "@/components/token-display";
 
 export default function CandidateProfilePage() {
   const { user } = useAuth();
+  const [credentials, setCredentials] = useState({
+    education: [],
+    experience: [],
+    skills: [],
+    extracurricular: [],
+  });
+  const [userProfile, setUserProfile] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    location: "",
+    title: "",
+    bio: "",
+    links: {
+      linkedin: "",
+      github: "",
+      portfolio: "",
+    },
+  });
+  const [loading, setLoading] = useState(true);
+  const [tokenStats, setTokenStats] = useState({
+    academic: { quantity: 0, quality: 0, microTokens: [] },
+    skills: { quantity: 0, quality: 0, microTokens: [] },
+    experience: { quantity: 0, quality: 0, microTokens: [] },
+    extracurricular: { quantity: 0, quality: 0, microTokens: [] },
+  });
 
-  // Sample profile data - keeping other data static for now
-  const profile = {
-    firstName: user?.displayName?.split(" ")[0] || "",
-    lastName: user?.displayName?.split(" ")[1] || "",
-    email: user?.email || "",
-    phone: "+91 8653420095", // This will remain static for now
-    location: "Amta Howrah West Bengal", // This will remain static for now
-    bio: "Frontend developer with 3 years of experience specializing in React and Next.js. Passionate about creating intuitive user interfaces and accessible web applications.",
-    linkedin: "https://linkedin.com/in/johndoe",
-    github: "https://github.com/senapati484",
-    portfolio: "https://johndoe.dev",
-    education: [
-      {
-        degree: "Bachelor of Science in Computer Science",
-        institution: "University of Technology",
-        year: "2018 - 2022",
-        verified: true,
-      },
-    ],
-    experience: [
-      {
-        position: "Frontend Developer",
-        company: "TechStart Inc.",
-        duration: "2022 - Present",
-        description:
-          "Developing and maintaining web applications using React and Next.js.",
-        verified: true,
-      },
-      {
-        position: "Web Development Intern",
-        company: "Digital Solutions",
-        duration: "2021 - 2022",
-        description:
-          "Assisted in the development of client websites and internal tools.",
-        verified: false,
-      },
-    ],
-    skills: [
-      { name: "React", level: "Advanced", verified: true },
-      { name: "Next.js", level: "Intermediate", verified: true },
-      { name: "TypeScript", level: "Intermediate", verified: true },
-      { name: "CSS/SCSS", level: "Advanced", verified: false },
-      { name: "Node.js", level: "Beginner", verified: false },
-    ],
-    extracurricular: [
-      {
-        title: "Student Council President",
-        organization: "University of Technology",
-        duration: "2021 - 2022",
-        description: "Led student initiatives and organized campus-wide events",
-        verified: true,
-        tokenValue: 3,
-      },
-      {
-        title: "Volunteer Teaching Assistant",
-        organization: "Code for Kids",
-        duration: "2020 - 2021",
-        description:
-          "Taught basic programming concepts to underprivileged children",
-        verified: true,
-        tokenValue: 2,
-      },
-      {
-        title: "Tech Community Lead",
-        organization: "Local Developer Meetup",
-        duration: "2022 - Present",
-        description: "Organizing monthly tech talks and workshops",
-        verified: false,
-        tokenValue: 2,
-      },
-    ],
+  useEffect(() => {
+    if (user) {
+      // Fetch user profile data
+      const userProfileRef = ref(db, `users/${user.uid}/profile`);
+      const unsubscribeProfile = onValue(userProfileRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const profileData = snapshot.val();
+          setUserProfile(profileData);
+        }
+      });
+
+      // Fetch credentials data
+      const credentialsRef = ref(db, `credentials/${user.uid}`);
+      const unsubscribeCredentials = onValue(credentialsRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const credentialsData = snapshot.val();
+          const formattedCredentials = {
+            education: [],
+            experience: [],
+            skills: [],
+            extracurricular: [],
+          };
+
+          // Calculate token statistics
+          const stats = {
+            academic: { quantity: 0, quality: 0, microTokens: [] },
+            skills: { quantity: 0, quality: 0, microTokens: [] },
+            experience: { quantity: 0, quality: 0, microTokens: [] },
+            extracurricular: { quantity: 0, quality: 0, microTokens: [] },
+          };
+
+          // Convert Firebase object to arrays and calculate token stats
+          Object.values(credentialsData).forEach((cred) => {
+            switch (cred.type) {
+              case "academic":
+                formattedCredentials.education.push({
+                  degree: cred.title,
+                  institution: cred.organization,
+                  year: `${new Date(cred.startDate).getFullYear()} - ${
+                    cred.endDate
+                      ? new Date(cred.endDate).getFullYear()
+                      : "Present"
+                  }`,
+                  verified: cred.status === "verified",
+                });
+                if (cred.status === "verified") {
+                  stats.academic.quantity++;
+                  // Calculate quality based on grade if available
+                  const qualityScore = cred.grade
+                    ? calculateGradeQuality(cred.grade)
+                    : 85;
+                  stats.academic.quality =
+                    (stats.academic.quality * (stats.academic.quantity - 1) +
+                      qualityScore) /
+                    stats.academic.quantity;
+                  stats.academic.microTokens.push({
+                    name: cred.title,
+                    value: qualityScore,
+                  });
+                }
+                break;
+
+              case "experience":
+                formattedCredentials.experience.push({
+                  position: cred.title,
+                  company: cred.organization,
+                  duration: `${new Date(cred.startDate).getFullYear()} - ${
+                    cred.endDate
+                      ? new Date(cred.endDate).getFullYear()
+                      : "Present"
+                  }`,
+                  description: cred.description,
+                  verified: cred.status === "verified",
+                });
+                if (cred.status === "verified") {
+                  stats.experience.quantity++;
+                  const expQuality = calculateExperienceQuality(cred);
+                  stats.experience.quality =
+                    (stats.experience.quality *
+                      (stats.experience.quantity - 1) +
+                      expQuality) /
+                    stats.experience.quantity;
+                  stats.experience.microTokens.push({
+                    name: cred.title,
+                    value: expQuality,
+                  });
+                }
+                break;
+
+              case "skills":
+                formattedCredentials.skills.push({
+                  name: cred.title,
+                  level: cred.proficiency,
+                  verified: cred.status === "verified",
+                });
+                if (cred.status === "verified") {
+                  stats.skills.quantity++;
+                  const skillQuality = calculateSkillQuality(cred.proficiency);
+                  stats.skills.quality =
+                    (stats.skills.quality * (stats.skills.quantity - 1) +
+                      skillQuality) /
+                    stats.skills.quantity;
+                  stats.skills.microTokens.push({
+                    name: cred.title,
+                    value: skillQuality,
+                  });
+                }
+                break;
+
+              case "extracurricular":
+                formattedCredentials.extracurricular.push({
+                  title: cred.title,
+                  organization: cred.organization,
+                  duration: `${new Date(cred.startDate).getFullYear()} - ${
+                    cred.endDate
+                      ? new Date(cred.endDate).getFullYear()
+                      : "Present"
+                  }`,
+                  description: cred.description,
+                  verified: cred.status === "verified",
+                  tokenValue: calculateActivityTokenValue(cred),
+                });
+                if (cred.status === "verified") {
+                  stats.extracurricular.quantity++;
+                  const activityQuality = calculateActivityQuality(cred);
+                  stats.extracurricular.quality =
+                    (stats.extracurricular.quality *
+                      (stats.extracurricular.quantity - 1) +
+                      activityQuality) /
+                    stats.extracurricular.quantity;
+                  stats.extracurricular.microTokens.push({
+                    name: cred.title,
+                    value: activityQuality,
+                  });
+                }
+                break;
+            }
+          });
+
+          setCredentials(formattedCredentials);
+          setTokenStats(stats);
+        }
+        setLoading(false);
+      });
+
+      return () => {
+        unsubscribeProfile();
+        unsubscribeCredentials();
+      };
+    }
+  }, [user]);
+
+  // Token calculation helper functions
+  const calculateGradeQuality = (grade) => {
+    // Convert different grade formats to a 0-100 scale
+    if (typeof grade === "string") {
+      if (grade.includes("/")) {
+        const [score, total] = grade.split("/").map(Number);
+        return (score / total) * 100;
+      }
+      // Add more grade format conversions as needed
+      return 85; // Default for verified credentials
+    }
+    return 85;
   };
 
-  // Token data from tokens page
+  const calculateExperienceQuality = (exp) => {
+    let quality = 80; // Base quality for verified experience
+
+    // Add bonuses based on various factors
+    if (exp.achievements) quality += 10;
+    if (exp.referenceContact) quality += 5;
+
+    return Math.min(quality, 100);
+  };
+
+  const calculateSkillQuality = (level) => {
+    switch (level?.toLowerCase()) {
+      case "expert":
+        return 95;
+      case "advanced":
+        return 85;
+      case "intermediate":
+        return 75;
+      case "beginner":
+        return 65;
+      default:
+        return 70;
+    }
+  };
+
+  const calculateActivityTokenValue = (activity) => {
+    let value = 2; // Base token value
+
+    // Adjust based on activity type and duration
+    if (activity.activityType === "leadership") value++;
+    if (activity.impact) value++;
+
+    return value;
+  };
+
+  const calculateActivityQuality = (activity) => {
+    let quality = 70; // Base quality
+
+    // Add bonuses for various factors
+    if (activity.impact) quality += 15;
+    if (activity.description) quality += 10;
+
+    return Math.min(quality, 100);
+  };
+
+  // Replace the static profile data with credentials from Firebase
+  const profile = {
+    ...userProfile,
+    email: user?.email || "",
+    ...credentials, // Spread the credentials from Firebase
+  };
+
+  // Replace the static allTokens with dynamic tokenStats
   const allTokens = [
     {
       category: "Academic",
       color: "#ef4444",
-      quantity: 7,
-      quality: 85,
-      microTokens: [
-        { name: "Bachelor's Degree", value: 90 },
-        { name: "Certifications", value: 80 },
-        { name: "Courses", value: 85 },
-      ],
+      quantity: tokenStats.academic.quantity,
+      quality: Math.round(tokenStats.academic.quality),
+      microTokens: tokenStats.academic.microTokens,
     },
     {
       category: "Skills",
       color: "#3b82f6",
-      quantity: 8,
-      quality: 75,
-      microTokens: [
-        { name: "Programming", value: 85 },
-        { name: "Design", value: 70 },
-        { name: "Communication", value: 65 },
-        { name: "Problem Solving", value: 80 },
-        { name: "Data Analysis", value: 75 },
-      ],
+      quantity: tokenStats.skills.quantity,
+      quality: Math.round(tokenStats.skills.quality),
+      microTokens: tokenStats.skills.microTokens,
     },
     {
       category: "Experience",
       color: "#22c55e",
-      quantity: 6,
-      quality: 80,
-      microTokens: [
-        { name: "Internship", value: 75 },
-        { name: "Part-time", value: 80 },
-        { name: "Projects", value: 85 },
-      ],
+      quantity: tokenStats.experience.quantity,
+      quality: Math.round(tokenStats.experience.quality),
+      microTokens: tokenStats.experience.microTokens,
     },
     {
       category: "Extracurricular",
       color: "#eab308",
-      quantity: 5,
-      quality: 70,
-      microTokens: [
-        { name: "Volunteering", value: 75 },
-        { name: "Leadership", value: 65 },
-        { name: "Sports", value: 70 },
-      ],
+      quantity: tokenStats.extracurricular.quantity,
+      quality: Math.round(tokenStats.extracurricular.quality),
+      microTokens: tokenStats.extracurricular.microTokens,
     },
   ];
 
@@ -239,7 +396,7 @@ export default function CandidateProfilePage() {
                     className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
                     asChild
                   >
-                    <Link href={profile.linkedin} target="_blank">
+                    <Link href={profile.links?.linkedin || "#"} target="_blank">
                       LinkedIn
                     </Link>
                   </Button>
@@ -249,7 +406,7 @@ export default function CandidateProfilePage() {
                     className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
                     asChild
                   >
-                    <Link href={profile.github} target="_blank">
+                    <Link href={profile.links?.github || "#"} target="_blank">
                       GitHub
                     </Link>
                   </Button>
@@ -259,7 +416,10 @@ export default function CandidateProfilePage() {
                     className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
                     asChild
                   >
-                    <Link href={profile.portfolio} target="_blank">
+                    <Link
+                      href={profile.links?.portfolio || "#"}
+                      target="_blank"
+                    >
                       Portfolio
                     </Link>
                   </Button>
