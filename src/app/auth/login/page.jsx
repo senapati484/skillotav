@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FcGoogle } from "react-icons/fc";
 import {
   Card,
   CardContent,
@@ -67,12 +68,12 @@ export default function LoginPage() {
 
             <div className="space-y-4">
               <Button
-                variant="outline"
+                variant="neutral"
                 className="w-full"
                 onClick={handleGoogleLogin}
                 disabled={isLoading}
               >
-                Continue with Google
+                <FcGoogle /> Continue with Google
               </Button>
 
               <div className="relative">

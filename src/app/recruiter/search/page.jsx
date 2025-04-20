@@ -144,14 +144,14 @@ export default function SearchCandidatesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold font-clash">Search Candidates</h1>
-        <p className="text-muted-foreground font-satoshi">
+        <h1 className="text-3xl font-bold">Search Candidates</h1>
+        <p className="text-muted-foreground">
           Find candidates based on their token profiles
         </p>
       </div>
-      <Card className="border-2 border-border shadow-shadow">
+      <Card>
         <CardHeader>
-          <CardTitle className="font-clash">Search & Filter</CardTitle>
+          <CardTitle>Search & Filter</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -159,19 +159,19 @@ export default function SearchCandidatesPage() {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search by name, title, or location"
-                className="pl-8 border-2 border-border"
+                className="pl-8"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
             <div>
-              <h3 className="font-medium font-clash mb-4">Token Filters</h3>
+              <h3 className="font-medium mb-4">Token Filters</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(tokenFilters).map(([category, filter]) => (
                   <div
                     key={category}
-                    className="space-y-2 border-2 border-border rounded-lg p-4 shadow-shadow"
+                    className="space-y-2 border rounded-lg p-4"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -223,9 +223,7 @@ export default function SearchCandidatesPage() {
             </div>
 
             <div className="flex justify-end">
-              <Button className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all">
-                Apply Filters
-              </Button>
+              <Button>Apply Filters</Button>
             </div>
           </div>
         </CardContent>
@@ -233,35 +231,22 @@ export default function SearchCandidatesPage() {
       <div className="space-y-4">
         {filteredCandidates.length > 0 ? (
           filteredCandidates.map((candidate) => (
-            <Card
-              key={candidate.id}
-              className="border-2 border-border shadow-shadow"
-            >
+            <Card key={candidate.id}>
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row justify-between gap-4">
                   <div className="space-y-2">
-                    <h3 className="font-semibold font-clash text-lg">
-                      {candidate.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground font-satoshi">
+                    <h3 className="font-semibold text-lg">{candidate.name}</h3>
+                    <p className="text-sm text-muted-foreground">
                       {candidate.title} • {candidate.location}
                     </p>
                   </div>
                   <div className="flex flex-col gap-2 min-w-[120px]">
-                    <Button
-                      asChild
-                      className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                    >
+                    <Button asChild>
                       <Link href={`/recruiter/candidates/${candidate.id}`}>
                         View Profile
                       </Link>
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                    >
-                      Contact
-                    </Button>
+                    <Button variant="outline">Contact</Button>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t">
@@ -290,7 +275,7 @@ export default function SearchCandidatesPage() {
           ))
         ) : (
           <div className="text-center py-12">
-            <p className="text-muted-foreground font-satoshi">
+            <p className="text-muted-foreground">
               No candidates match your search criteria
             </p>
           </div>

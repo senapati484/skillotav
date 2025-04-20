@@ -25,9 +25,17 @@ import {
   LuPhone,
   LuArrowRight,
 } from "react-icons/lu";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const isAuth =
+    pathname.includes("/auth/login") || pathname.includes("/auth/register");
+
+  if (isAuth) {
+    return null;
+  }
 
   return (
     <footer className="bg-background border-t-2 border-border mt-10 pt-10 pb-6">
@@ -36,7 +44,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {/* Company info */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-heading font-bold font-clash">SKILLOTAV</h3>
+            <h3 className="text-2xl font-heading font-bold font-clash">
+              SKILLOTAV
+            </h3>
             <p className="text-sm font-base max-w-xs">
               Showcase your skills and connect with professionals around the
               world. Build your portfolio and grow your network.

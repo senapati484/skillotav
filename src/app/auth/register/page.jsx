@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/components/provider/AuthProvider";
+import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -79,12 +80,12 @@ export default function RegisterPage() {
 
             <div className="space-y-4">
               <Button
-                variant="outline"
+                variant="neutral"
                 className="w-full"
                 onClick={handleGoogleRegister}
                 disabled={isLoading}
               >
-                Continue with Google
+                <FcGoogle /> Continue with Google
               </Button>
 
               <div className="relative">

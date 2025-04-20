@@ -22,11 +22,11 @@ export default function CandidateProfilePage() {
     firstName: user?.displayName?.split(" ")[0] || "",
     lastName: user?.displayName?.split(" ")[1] || "",
     email: user?.email || "",
-    phone: "+1 (555) 123-4567", // This will remain static for now
-    location: "New York, NY", // This will remain static for now
+    phone: "+91 8653420095", // This will remain static for now
+    location: "Amta Howrah West Bengal", // This will remain static for now
     bio: "Frontend developer with 3 years of experience specializing in React and Next.js. Passionate about creating intuitive user interfaces and accessible web applications.",
     linkedin: "https://linkedin.com/in/johndoe",
-    github: "https://github.com/johndoe",
+    github: "https://github.com/senapati484",
     portfolio: "https://johndoe.dev",
     education: [
       {
@@ -176,6 +176,7 @@ export default function CandidateProfilePage() {
           <Button
             className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
             asChild
+            variant="nuetral"
           >
             <Link href="/candidate/profile/edit">Edit Profile</Link>
           </Button>
