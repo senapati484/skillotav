@@ -4,53 +4,17 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-
-const components = [
-  {
-    title: "Alert Dialog",
-    href: "https://ui.shadcn.com/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "https://ui.shadcn.com/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "https://ui.shadcn.com/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "https://ui.shadcn.com/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "https://ui.shadcn.com/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "https://ui.shadcn.com/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
+import { useAuth } from "@/components/provider/AuthProvider";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="w-full flex justify-around items-center border-b-1 py-2 sticky top-0 bg-background/80 backdrop-blur-sm z-[100]">
       <div className="flex gap-3">
         <div className="flex justify-center items-center text-4xl font-extrabold dark:invert">
-          SKILLOTAV
+          <Link href="/">SKILLOTAV</Link>
         </div>
       </div>
       <div className="flex gap-4 items-center">
@@ -78,12 +42,38 @@ const Header = () => {
             />
           </svg>
         </Button>
-        <Button
-          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-          asChild
-        >
-          <Link href="/auth/login">Sign in</Link>
-        </Button>
+
+        {user ? (
+          <>
+            <Button
+              className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+              asChild
+            >
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+            <Button
+              className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+              onClick={signOut}
+            >
+              Sign Out
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+              asChild
+            >
+              <Link href="/auth/login">Sign In</Link>
+            </Button>
+            <Button
+              className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+              asChild
+            >
+              <Link href="/auth/register">Register</Link>
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
