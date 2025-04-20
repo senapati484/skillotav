@@ -33,7 +33,7 @@ export function RecruiterNav() {
             href="/recruiter/dashboard"
             className="text-2xl font-clash font-bold"
           >
-            SkillChain
+            SkillTav
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

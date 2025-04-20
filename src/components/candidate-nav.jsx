@@ -106,7 +106,7 @@ export function CandidateNav() {
             href="/candidate/dashboard"
             className="text-2xl font-clash font-bold"
           >
-            SkillChain
+            SkilloTav
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
