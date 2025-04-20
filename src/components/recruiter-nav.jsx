@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/components/provider/AuthProvider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,20 +23,32 @@ const navItems = [
 
 export function RecruiterNav() {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   return (
     <>
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/recruiter/dashboard" className="text-2xl font-bold">
+          <Link
+            href="/recruiter/dashboard"
+            className="text-2xl font-clash font-bold"
+          >
             SkillChain
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="/placeholder.svg" alt="User" />
+                  <AvatarImage
+                    src={user?.photoURL || "/placeholder.svg"}
+                    alt="Profile"
+                  />
                   <AvatarFallback>AC</AvatarFallback>
+                  {/* <AvatarFallback className="text-xl font-clash">
+                    {`${profile.firstName?.[0] || ""}${
+                      profile.lastName?.[0] || ""
+                    }`}
+                  </AvatarFallback> */}
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -61,16 +74,16 @@ export function RecruiterNav() {
       </header>
       <div className="container mx-auto px-4 py-4">
         <nav className="flex overflow-x-auto pb-2">
-          <div className="flex">
+          <div className="flex flex-row gap-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "pr-6 py-2 text-sm text-md font-bold rounded-md whitespace-nowrap",
+                  "py-2 text-md font-bold rounded-md whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-left",
                   pathname === item.href
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    ? "text-foreground after:bg-foreground"
+                    : "text-muted-foreground hover:text-foreground after:bg-muted-foreground after:scale-x-0 hover:after:scale-x-100 after:transition-transform"
                 )}
               >
                 {item.label}
