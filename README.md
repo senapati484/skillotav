@@ -7,17 +7,18 @@ A decentralized platform connecting talent with opportunities through verified s
 ### Demo Walkthrough
 <div align="center">
   <a href="https://youtu.be/Kq7hVWKGjlQ">
-    <img src="https://img.youtube.com/vi/Kq7hVWKGjlQ/maxresdefault.jpg" alt="Demo Video" width="600">
+    <img src="https://img.youtube.com/vi/e_tmNxhQifk/maxresdefault.jpg" alt="Demo Video" width="600">
   </a>
-  <p>▶️ Watch Demo: <a href="https://youtu.be/Kq7hVWKGjlQ">https://youtu.be/Kq7hVWKGjlQ</a></p>
+  <p>▶️ Watch Demo: <a href="https://youtu.be/e_tmNxhQifk">https://youtu.be/e_tmNxhQifk</a></p>
 </div>
 
 ### Project Presentation
 <div align="center">
   <a href="https://youtu.be/e_tmNxhQifk">
-    <img src="https://img.youtube.com/vi/e_tmNxhQifk/maxresdefault.jpg" alt="Presentation Video" width="600">
+    <img src="https://img.youtube.com/vi/Kq7hVWKGjlQ/maxresdefault.jpg" alt="Presentation Video" width="600">
   </a>
-  <p>▶️ Watch Presentation: <a href="https://youtu.be/e_tmNxhQifk">https://youtu.be/e_tmNxhQifk</a></p>
+  https://img.youtube.com/vi/e_tmNxhQifk/maxresdefault.jpg
+  <p>▶️ Watch Presentation: <a href="">https://youtu.be/Kq7hVWKGjlQ</a>https://youtu.be/Kq7hVWKGjlQ</p>
 </div>
 
 ## Tech Stack 🛠️
