@@ -82,7 +82,7 @@ export default function Home() {
       </section> */}
 
       {/* Tabs Section (Demo) */}
-      <section className="relative z-40 pt-30 pb-20 bg-secondary-background">
+      <section className="relative z-40 pt-30 pb-20 bg-background">
         <TabsDemo />
       </section>
 

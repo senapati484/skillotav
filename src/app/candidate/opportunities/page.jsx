@@ -156,7 +156,7 @@ export default function OpportunitiesPage() {
           Find job opportunities that match your token profile
         </p>
       </div>
-      <Card className="border-2 border-border shadow-shadow">
+      <Card className="border-2 border-border shadow-shadow bg-background/30 backdrop-blur-sm sticky top-6 z-10">
         <CardHeader>
           <CardTitle className="font-clash">Search & Filter</CardTitle>
         </CardHeader>
