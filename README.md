@@ -1,4 +1,4 @@
-# SkillChain 🔗
+# SkillTav 🔗
 
 A decentralized platform connecting talent with opportunities through verified skill tokens. SkillChain revolutionizes recruitment by tokenizing professional credentials and enabling trust-based hiring through blockchain verification.
 
