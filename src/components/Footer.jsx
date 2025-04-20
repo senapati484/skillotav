@@ -120,15 +120,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm">
                 <LuMapPin className="h-4 w-4 flex-shrink-0" />
-                <span>123 Neobrutalism St, Design District</span>
+                <span>Amta, Howrah, West Bengal</span>
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <LuPhone className="h-4 w-4 flex-shrink-0" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 8653420095</span>
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <LuMail className="h-4 w-4 flex-shrink-0" />
-                <span>hello@skillotav.com</span>
+                <span>sayansenapati2544@gmail.com</span>
               </li>
             </ul>
           </div>
