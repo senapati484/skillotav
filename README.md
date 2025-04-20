@@ -7,9 +7,11 @@ A revolutionary decentralized platform that transforms how individuals represent
 ## Demo & Presentation 🎥
 
 ### Demo Video
+
 [![Demo Video](https://img.youtube.com/vi/e_tmNxhQifk/0.jpg)](https://www.youtube.com/watch?v=e_tmNxhQifk)
 
 ### Project Presentation
+
 [![Project Presentation](https://img.youtube.com/vi/Kq7hVWKGjlQ/0.jpg)](https://www.youtube.com/watch?v=Kq7hVWKGjlQ)
 
 ## Problem Statement 🎯

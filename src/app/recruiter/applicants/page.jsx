@@ -89,113 +89,81 @@ export default function ApplicantsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold font-clash">Applicants</h1>
-        <p className="text-muted-foreground font-satoshi">
+        <h1 className="text-3xl font-bold">Applicants</h1>
+        <p className="text-muted-foreground">
           Manage candidates who have applied to your job postings
         </p>
       </div>
-      <Card className="border-2 border-border shadow-shadow">
+      <Card>
         <CardHeader>
-          <CardTitle className="font-clash">Applicant Summary</CardTitle>
-          <CardDescription className="font-satoshi">
-            Overview of all applicants
-          </CardDescription>
+          <CardTitle>Applicant Summary</CardTitle>
+          <CardDescription>Overview of all applicants</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="border-2 border-border shadow-shadow p-4 rounded-lg text-center">
-              <p className="text-3xl font-bold font-clash">
-                {applicants.length}
-              </p>
-              <p className="text-sm text-muted-foreground font-satoshi">
-                Total Applicants
-              </p>
+            <div className="bg-muted p-4 rounded-lg text-center">
+              <p className="text-3xl font-bold">{applicants.length}</p>
+              <p className="text-sm text-muted-foreground">Total Applicants</p>
             </div>
-            <div className="border-2 border-border shadow-shadow p-4 rounded-lg text-center">
-              <p className="text-3xl font-bold font-clash">2</p>
-              <p className="text-sm text-muted-foreground font-satoshi">
-                Under Review
-              </p>
+            <div className="bg-muted p-4 rounded-lg text-center">
+              <p className="text-3xl font-bold">2</p>
+              <p className="text-sm text-muted-foreground">Under Review</p>
             </div>
-            <div className="border-2 border-border shadow-shadow p-4 rounded-lg text-center">
-              <p className="text-3xl font-bold font-clash">1</p>
-              <p className="text-sm text-muted-foreground font-satoshi">
-                Shortlisted
-              </p>
+            <div className="bg-muted p-4 rounded-lg text-center">
+              <p className="text-3xl font-bold">1</p>
+              <p className="text-sm text-muted-foreground">Shortlisted</p>
             </div>
-            <div className="border-2 border-border shadow-shadow p-4 rounded-lg text-center">
-              <p className="text-3xl font-bold font-clash">1</p>
-              <p className="text-sm text-muted-foreground font-satoshi">
-                Interviews
-              </p>
+            <div className="bg-muted p-4 rounded-lg text-center">
+              <p className="text-3xl font-bold">1</p>
+              <p className="text-sm text-muted-foreground">Interviews</p>
             </div>
-            <div className="border-2 border-border shadow-shadow p-4 rounded-lg text-center">
-              <p className="text-3xl font-bold font-clash">2</p>
-              <p className="text-sm text-muted-foreground font-satoshi">
-                Rejected
-              </p>
+            <div className="bg-muted p-4 rounded-lg text-center">
+              <p className="text-3xl font-bold">2</p>
+              <p className="text-sm text-muted-foreground">Rejected</p>
             </div>
           </div>
         </CardContent>
       </Card>
-      <Tabs
-        defaultValue="all"
-        className="border-2 border-border rounded-lg p-1"
-      >
-        <TabsList className="grid grid-cols-5 w-full">
-          <TabsTrigger value="all" className="font-clash">
-            All Applicants
-          </TabsTrigger>
-          <TabsTrigger value="review" className="font-clash">
-            Under Review
-          </TabsTrigger>
-          <TabsTrigger value="shortlisted" className="font-clash">
-            Shortlisted
-          </TabsTrigger>
-          <TabsTrigger value="interview" className="font-clash">
-            Interview
-          </TabsTrigger>
-          <TabsTrigger value="rejected" className="font-clash">
-            Rejected
-          </TabsTrigger>
+      <Tabs defaultValue="all">
+        <TabsList>
+          <TabsTrigger value="all">All Applicants</TabsTrigger>
+          <TabsTrigger value="review">Under Review</TabsTrigger>
+          <TabsTrigger value="shortlisted">Shortlisted</TabsTrigger>
+          <TabsTrigger value="interview">Interview</TabsTrigger>
+          <TabsTrigger value="rejected">Rejected</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="mt-6">
-          <Card className="border-2 border-border shadow-shadow">
+          <Card>
             <CardContent className="p-0">
               <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left font-satoshi">
-                  <thead className="text-xs uppercase border-b border-border">
+                <table className="w-full text-sm text-left">
+                  <thead className="text-xs uppercase bg-muted">
                     <tr>
-                      <th scope="col" className="px-6 py-3 font-clash">
+                      <th scope="col" className="px-6 py-3">
                         Applicant
                       </th>
-                      <th scope="col" className="px-6 py-3 font-clash">
+                      <th scope="col" className="px-6 py-3">
                         Position
                       </th>
-                      <th scope="col" className="px-6 py-3 font-clash">
+                      <th scope="col" className="px-6 py-3">
                         Applied Date
                       </th>
-                      <th scope="col" className="px-6 py-3 font-clash">
+                      <th scope="col" className="px-6 py-3">
                         Token Match
                       </th>
-                      <th scope="col" className="px-6 py-3 font-clash">
+                      <th scope="col" className="px-6 py-3">
                         Status
                       </th>
-                      <th scope="col" className="px-6 py-3 font-clash">
+                      <th scope="col" className="px-6 py-3">
                         Actions
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {applicants.map((app) => (
-                      <tr
-                        key={app.id}
-                        className="border-b border-border/50 last:border-0"
-                      >
-                        <td className="px-6 py-4 font-medium font-clash">
-                          {app.name}
-                        </td>
+                      <tr key={app.id} className="bg-white border-b">
+                        <td className="px-6 py-4 font-medium">{app.name}</td>
                         <td className="px-6 py-4">{app.position}</td>
                         <td className="px-6 py-4">{app.appliedDate}</td>
                         <td className="px-6 py-4">
@@ -216,21 +184,12 @@ export default function ApplicantsPage() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              asChild
-                              className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                            >
+                            <Button variant="outline" size="sm" asChild>
                               <Link href={`/recruiter/applicants/${app.id}`}>
                                 View
                               </Link>
                             </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                            >
+                            <Button variant="outline" size="sm">
                               Update
                             </Button>
                           </div>
@@ -245,22 +204,17 @@ export default function ApplicantsPage() {
         </TabsContent>
 
         <TabsContent value="review" className="mt-6">
-          <Card className="border-2 border-border shadow-shadow">
+          <Card>
             <CardContent className="p-6">
               <div className="space-y-4">
                 {applicants
                   .filter((app) => app.status === "Under Review")
                   .map((app) => (
-                    <div
-                      key={app.id}
-                      className="border-2 border-border shadow-shadow rounded-lg p-4"
-                    >
+                    <div key={app.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <h3 className="font-semibold font-clash">
-                            {app.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground font-satoshi">
+                          <h3 className="font-semibold">{app.name}</h3>
+                          <p className="text-sm text-muted-foreground">
                             {app.position} • Applied {app.appliedDate}
                           </p>
                         </div>
@@ -280,27 +234,15 @@ export default function ApplicantsPage() {
                         </div>
                       </div>
                       <div className="flex gap-2 mt-4">
-                        <Button
-                          size="sm"
-                          asChild
-                          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                        >
+                        <Button size="sm" asChild>
                           <Link href={`/recruiter/applicants/${app.id}`}>
                             View Profile
                           </Link>
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                        >
+                        <Button size="sm" variant="outline">
                           Shortlist
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                        >
+                        <Button size="sm" variant="outline">
                           Reject
                         </Button>
                       </div>
@@ -309,7 +251,7 @@ export default function ApplicantsPage() {
 
                 {applicants.filter((app) => app.status === "Under Review")
                   .length === 0 && (
-                  <p className="text-center text-muted-foreground font-satoshi py-4">
+                  <p className="text-center text-muted-foreground py-4">
                     No applicants under review
                   </p>
                 )}
@@ -318,23 +260,19 @@ export default function ApplicantsPage() {
           </Card>
         </TabsContent>
 
+        {/* Similar content for other tabs */}
         <TabsContent value="shortlisted" className="mt-6">
-          <Card className="border-2 border-border shadow-shadow">
+          <Card>
             <CardContent className="p-6">
               <div className="space-y-4">
                 {applicants
                   .filter((app) => app.status === "Shortlisted")
                   .map((app) => (
-                    <div
-                      key={app.id}
-                      className="border-2 border-border shadow-shadow rounded-lg p-4"
-                    >
+                    <div key={app.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <h3 className="font-semibold font-clash">
-                            {app.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground font-satoshi">
+                          <h3 className="font-semibold">{app.name}</h3>
+                          <p className="text-sm text-muted-foreground">
                             {app.position} • Applied {app.appliedDate}
                           </p>
                         </div>
@@ -354,27 +292,15 @@ export default function ApplicantsPage() {
                         </div>
                       </div>
                       <div className="flex gap-2 mt-4">
-                        <Button
-                          size="sm"
-                          asChild
-                          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                        >
+                        <Button size="sm" asChild>
                           <Link href={`/recruiter/applicants/${app.id}`}>
                             View Profile
                           </Link>
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                        >
+                        <Button size="sm" variant="outline">
                           Schedule Interview
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-2 border-border shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                        >
+                        <Button size="sm" variant="outline">
                           Reject
                         </Button>
                       </div>
@@ -383,7 +309,7 @@ export default function ApplicantsPage() {
 
                 {applicants.filter((app) => app.status === "Shortlisted")
                   .length === 0 && (
-                  <p className="text-center text-muted-foreground font-satoshi py-4">
+                  <p className="text-center text-muted-foreground py-4">
                     No shortlisted applicants
                   </p>
                 )}

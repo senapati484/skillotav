@@ -1,13 +1,5 @@
 import Link from "next/link";
 import { CandidateNav } from "@/components/candidate-nav";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export default function CandidateLayout({ children }) {
   return (
