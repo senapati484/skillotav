@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/components/provider/AuthProvider";
+import { ethers } from "ethers";
 import {
   Card,
   CardContent,
@@ -7,9 +12,63 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { MapPin, Building, Clock, Briefcase } from "lucide-react";
 
 export default function CandidateDashboard() {
+  const { user } = useAuth();
+  const [walletAddress, setWalletAddress] = useState(null);
+  const [balance, setBalance] = useState(null);
+  const [resumeFile, setResumeFile] = useState(null);
+  const [githubUsername, setGithubUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [analysisResult, setAnalysisResult] = useState(null);
+
+  const connectWallet = async () => {
+    if (typeof window.ethereum === "undefined") {
+      alert("Please install MetaMask!");
+      return;
+    }
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+      const balanceWei = await provider.getBalance(address);
+      const balanceEth = ethers.formatEther(balanceWei);
+      setWalletAddress(address);
+      setBalance(parseFloat(balanceEth).toFixed(4));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to connect wallet.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!resumeFile || !githubUsername.trim()) {
+      setError("Please upload a resume and enter your GitHub username.");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const fd = new FormData();
+      fd.append("resume", resumeFile);
+      fd.append("username", githubUsername.trim());
+      const res = await fetch("/api/analyze", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Analysis failed");
+      setAnalysisResult(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Sample job opportunities
   const recommendedOpportunities = [
     {
@@ -228,11 +287,127 @@ export default function CandidateDashboard() {
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
-      {/* Main content */}
       <div className="flex-1 space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold">Welcome, John Doe</h1>
-        </div>
+        <h1 className="text-3xl font-bold">
+          Welcome, {user?.displayName?.split(" ")[0] || "User"}
+        </h1>
+
+        <Card className="border-2 border-border shadow-shadow p-6">
+          <CardHeader>
+            <CardTitle>My Profile</CardTitle>
+            <CardDescription>View and manage your credentials</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col items-center text-center md:w-1/3">
+              <Avatar className="w-32 h-32 mb-4 border-2 border-border">
+                <AvatarImage
+                  src={user?.photoURL || "/placeholder.svg"}
+                  alt="Profile"
+                />
+                <AvatarFallback>
+                  {user?.displayName
+                    ?.split(" ")
+                    .map((n) => n[0])
+                    .join("") || "JD"}
+                </AvatarFallback>
+              </Avatar>
+              <h2 className="text-xl font-bold">{user?.displayName}</h2>
+              <p className="text-sm text-muted-foreground">
+                Frontend Developer
+              </p>
+              <div className="flex gap-2 mt-4">
+                <Button variant="outline" size="sm" onClick={connectWallet}>
+                  {walletAddress ? "Wallet Connected" : "Connect Wallet"}
+                </Button>
+              </div>
+              {walletAddress && (
+                <p className="mt-2 text-sm">
+                  {walletAddress} • {balance} ETH
+                </p>
+              )}
+            </div>
+            <div className="flex-1">
+              <Tabs defaultValue="about">
+                <TabsList className="grid grid-cols-5 w-full border-2 border-border">
+                  <TabsTrigger value="about">About</TabsTrigger>
+                  <TabsTrigger value="education">Education</TabsTrigger>
+                  <TabsTrigger value="experience">Experience</TabsTrigger>
+                  <TabsTrigger value="skills">Skills</TabsTrigger>
+                  <TabsTrigger value="extracurricular">
+                    Extracurricular
+                  </TabsTrigger>
+                </TabsList>
+                {/* Add TabsContent components here */}
+              </Tabs>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-border shadow-shadow p-6">
+          <CardHeader>
+            <CardTitle>Analyze Your Profile</CardTitle>
+            <CardDescription>
+              Upload resume & GitHub for fit analysis
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">
+                  Resume (DOCX)
+                </label>
+                <input
+                  type="file"
+                  accept=".docx"
+                  onChange={(e) => setResumeFile(e.target.files?.[0] || null)}
+                  className="mt-1 block w-full text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  GitHub Username
+                </label>
+                <input
+                  type="text"
+                  value={githubUsername}
+                  onChange={(e) => setGithubUsername(e.target.value)}
+                  placeholder="e.g. arkokundu500"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+                />
+              </div>
+              {error && <p className="text-red-600">{error}</p>}
+              <Button type="submit" disabled={loading}>
+                {loading ? "Analyzing…" : "Analyze Profile"}
+              </Button>
+            </form>
+            {analysisResult && (
+              <Card className="mt-6 border-2 border-border shadow-shadow">
+                <CardHeader>
+                  <CardTitle>Analysis Result</CardTitle>
+                  <CardDescription>Resume & GitHub fit</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    <strong>Fit Score:</strong> {analysisResult.fitPercentage}%
+                  </p>
+                  <p>
+                    <strong>Role:</strong> {analysisResult.finalRole}
+                  </p>
+                  <p>
+                    <strong>Skills:</strong> {analysisResult.skills?.join(", ")}
+                  </p>
+                  {analysisResult.recommendations?.length > 0 && (
+                    <ul className="list-disc list-inside mt-2">
+                      {analysisResult.recommendations.map((r, i) => (
+                        <li key={i}>{r}</li>
+                      ))}
+                    </ul>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </CardContent>
+        </Card>
 
         <div className="space-y-6">
           <h2 className="text-2xl font-bold">Recommended Opportunities</h2>
@@ -244,7 +419,7 @@ export default function CandidateDashboard() {
           {allOpportunities.map(renderJobCard)}
         </div>
       </div>
-      {/* Non-collapsible sidebar for recent applications */}
+
       <div className="md:w-80 shrink-0">
         <div className="sticky top-6">
           <Card className="border-2 border-border shadow-shadow">
