@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import {
-  getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
@@ -11,22 +10,10 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { toast } from "sonner";
-
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+import { auth } from "@/lib/firebase";
+import { ref, set } from "firebase/database";
+import { db } from "@/lib/firebase";
 
 const AuthContext = createContext({});
 
@@ -43,10 +30,52 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  const createUserData = async (user) => {
+    try {
+      // Set up initial profile data
+      const userRef = ref(db, `users/${user.uid}`);
+      await set(userRef, {
+        profile: {
+          name: {
+            firstName: user.displayName?.split(" ")[0] || "",
+            lastName: user.displayName?.split(" ")[1] || "",
+          },
+          email: user.email,
+          phone: "",
+          location: "",
+          title: "Frontend Developer",
+          bio: "",
+          links: {
+            linkedin: "",
+            github: "",
+            portfolio: "",
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        settings: {
+          emailNotifications: true,
+          tokenVisibility: "public",
+        },
+      });
+
+      // Initialize the credentials node
+      const credentialsRef = ref(db, `credentials/${user.uid}`);
+      await set(credentialsRef, {});
+
+      toast.success("Profile created successfully");
+    } catch (error) {
+      console.error("Error creating user data:", error);
+      toast.error("Failed to set up user profile");
+      throw error;
+    }
+  };
+
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
+      await createUserData(result.user);
       toast.success("Successfully signed in with Google");
       return result.user;
     } catch (error) {
@@ -96,6 +125,7 @@ export const AuthProvider = ({ children }) => {
         });
       }
 
+      await createUserData(result.user);
       toast.success("Account created successfully");
       return result.user;
     } catch (error) {

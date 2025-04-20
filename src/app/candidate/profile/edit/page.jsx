@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/provider/AuthProvider";
+import { ref, get, set } from "firebase/database";
+import { db } from "@/lib/firebase";
 import {
   Card,
   CardContent,
@@ -20,27 +22,82 @@ export default function EditProfilePage() {
   const router = useRouter();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
-    firstName: user?.displayName?.split(" ")[0] || "",
-    lastName: user?.displayName?.split(" ")[1] || "",
+    name: {
+      firstName: user?.displayName?.split(" ")[0] || "",
+      lastName: user?.displayName?.split(" ")[1] || "",
+    },
     email: user?.email || "",
     phone: "",
     location: "",
     title: "Frontend Developer",
     bio: "",
-    linkedin: "",
-    github: "",
-    portfolio: "",
+    links: {
+      linkedin: "",
+      github: "",
+      portfolio: "",
+    },
   });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user?.uid && !initialDataLoaded) {
+        try {
+          const userRef = ref(db, `users/${user.uid}/profile`);
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            setFormData((prevData) => ({
+              ...prevData,
+              ...userData,
+              email: user.email, // Keep email from auth
+              name: {
+                firstName: user.displayName?.split(" ")[0] || "",
+                lastName: user.displayName?.split(" ")[1] || "",
+              },
+            }));
+          }
+          setInitialDataLoaded(true);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          toast.error("Failed to load profile data");
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user, initialDataLoaded]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name.startsWith("name.")) {
+      const field = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        name: {
+          ...prev.name,
+          [field]: value,
+        },
+      }));
+    } else if (name.startsWith("links.")) {
+      const field = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        links: {
+          ...prev.links,
+          [field]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -48,16 +105,25 @@ export default function EditProfilePage() {
     setIsLoading(true);
 
     try {
-      // In a real app, we would submit to an API here
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
+      const userRef = ref(db, `users/${user.uid}/profile`);
+      await set(userRef, {
+        ...formData,
+        updatedAt: new Date().toISOString(),
+      });
+
       toast.success("Profile updated successfully");
       router.push("/candidate/profile");
     } catch (error) {
+      console.error("Error updating profile:", error);
       toast.error("Failed to update profile");
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (!initialDataLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -87,8 +153,8 @@ export default function EditProfilePage() {
                   </Label>
                   <Input
                     id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
+                    name="name.firstName"
+                    value={formData.name.firstName}
                     onChange={handleChange}
                     className="border-2 border-border"
                     required
@@ -100,8 +166,8 @@ export default function EditProfilePage() {
                   </Label>
                   <Input
                     id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
+                    name="name.lastName"
+                    value={formData.name.lastName}
                     onChange={handleChange}
                     className="border-2 border-border"
                     required
@@ -199,9 +265,9 @@ export default function EditProfilePage() {
                 </Label>
                 <Input
                   id="linkedin"
-                  name="linkedin"
+                  name="links.linkedin"
                   type="url"
-                  value={formData.linkedin}
+                  value={formData.links.linkedin}
                   onChange={handleChange}
                   className="border-2 border-border"
                   placeholder="https://linkedin.com/in/username"
@@ -214,9 +280,9 @@ export default function EditProfilePage() {
                 </Label>
                 <Input
                   id="github"
-                  name="github"
+                  name="links.github"
                   type="url"
-                  value={formData.github}
+                  value={formData.links.github}
                   onChange={handleChange}
                   className="border-2 border-border"
                   placeholder="https://github.com/username"
@@ -229,9 +295,9 @@ export default function EditProfilePage() {
                 </Label>
                 <Input
                   id="portfolio"
-                  name="portfolio"
+                  name="links.portfolio"
                   type="url"
-                  value={formData.portfolio}
+                  value={formData.links.portfolio}
                   onChange={handleChange}
                   className="border-2 border-border"
                   placeholder="https://yourportfolio.com"
