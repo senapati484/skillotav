@@ -18,6 +18,8 @@ A decentralized platform connecting talent with opportunities through verified s
     <img src="https://img.youtube.com/vi/Kq7hVWKGjlQ/maxresdefault.jpg" alt="Presentation Video" width="600">
   </a>
   https://img.youtube.com/vi/e_tmNxhQifk/maxresdefault.jpg
+<br>
+  Presentation : https://docs.google.com/presentation/d/12Dq0Oj026v3gLltq5JDQ2fCtwuXjH2Jul6zgQpVAAX0/edit?usp=sharing
   <p>▶️ Watch Presentation: <a href="">https://youtu.be/Kq7hVWKGjlQ</a>https://youtu.be/Kq7hVWKGjlQ</p>
 </div>
 
