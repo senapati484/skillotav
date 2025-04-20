@@ -6,7 +6,7 @@ import {
   LuArrowRight,
   LuGraduationCap,
   LuShieldCheck,
-  LuTrophy,
+  LuUserSearch,
 } from "react-icons/lu";
 import RotatingText from "./ui/rotatingtext";
 import Link from "next/link";
@@ -42,7 +42,7 @@ const HeroSection = () => {
         {/* Subheading */}
         <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-muted-foreground">
           A revolutionary platform that transforms your academic achievements
-          and professional skills into verifiable digital credentials.
+          and professional skills into verifiable career assets.
         </p>
 
         {/* CTA Buttons */}
@@ -83,9 +83,9 @@ const HeroSection = () => {
             icon: <LuShieldCheck className="size-8 md:size-10" />,
           },
           {
-            title: "Reward System",
-            desc: "Earn points and rewards for verified contributions",
-            icon: <LuTrophy className="size-8 md:size-10" />,
+            title: "Smart Recruitment",
+            desc: "A step in simplifying the recruitment process",
+            icon: <LuUserSearch className="size-8 md:size-10" />,
           },
         ].map(({ title, desc, icon }, i) => (
           <Card

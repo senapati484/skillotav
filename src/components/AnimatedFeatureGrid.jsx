@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   FaGraduationCap,
   FaShieldAlt,
-  FaTrophy,
+  FaStreetView,
   FaLink,
   FaGlobe,
   FaBolt,
@@ -20,7 +20,7 @@ const features = [
   {
     icon: FaGraduationCap,
     title: "Academic Credentials",
-    desc: "Transform your academic achievements into secure, verifiable digital credentials that are globally recognized.",
+    desc: "Transform your academic achievements into secure, verifiable digital career assets that are globally recognized.",
   },
   {
     icon: FaShieldAlt,
@@ -28,9 +28,9 @@ const features = [
     desc: "Get your skills validated by industry experts through our comprehensive verification system.",
   },
   {
-    icon: FaTrophy,
-    title: "Reward System",
-    desc: "Earn rewards and recognition for your contributions while building a trusted professional network.",
+    icon: FaStreetView,
+    title: "Smart Recruitment",
+    desc: "Experience a revolutionary recruitment process with token-based filtering and seamless access.",
   },
   {
     icon: FaLink,
@@ -44,8 +44,8 @@ const features = [
   },
   {
     icon: FaBolt,
-    title: "Instant Access",
-    desc: "Access and share your verified credentials anytime, anywhere.",
+    title: "Intelligent Matching",
+    desc: "Connect with roles tailored to your real abilities, and recruiters discover candidates with job-ready merits",
   },
 ];
 

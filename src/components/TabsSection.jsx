@@ -29,11 +29,11 @@ export function TabsDemo() {
           </TabsTrigger>
           <TabsTrigger value="courses" className="flex items-center gap-2 py-3">
             <LuBook className="h-5 w-5" />
-            <span className="hidden md:inline">Courses</span>
+            <span className="hidden md:inline">Experience</span>
           </TabsTrigger>
           <TabsTrigger value="achievements" className="flex items-center gap-2 py-3">
             <LuTrophy className="h-5 w-5" />
-            <span className="hidden md:inline">Rewards</span>
+            <span className="hidden md:inline">Activities</span>
           </TabsTrigger>
         </TabsList>
 
@@ -77,7 +77,7 @@ export function TabsDemo() {
               <CardHeader>
                 <h3 className="text-2xl font-clash font-bold">Project Showcase</h3>
                 <p className="text-muted-foreground">
-                  Build and showcase your portfolio with verified project experiences.
+                  Build and showcase your portfolio with verified projects.
                 </p>
               </CardHeader>
               <CardContent>
@@ -91,14 +91,14 @@ export function TabsDemo() {
           <TabsContent value="courses">
             <Card>
               <CardHeader>
-                <h3 className="text-2xl font-clash font-bold">Learning Path</h3>
+                <h3 className="text-2xl font-clash font-bold">Experiences</h3>
                 <p className="text-muted-foreground">
-                  Access curated courses and track your learning progress.
+                Showcase your real-world impact through jobs,internships and hands-on contributions..
                 </p>
               </CardHeader>
               <CardContent>
                 <div className="aspect-video rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 p-8 text-white flex items-center justify-center">
-                  <span className="text-xl font-semibold">Course Catalog</span>
+                  <span className="text-xl font-semibold">Experience Lists</span>
                 </div>
               </CardContent>
             </Card>
@@ -108,10 +108,10 @@ export function TabsDemo() {
             <Card>
               <CardHeader>
                 <h3 className="text-2xl font-clash font-bold">
-                  Achievements & Rewards
+                  Activities and Achievements
                 </h3>
                 <p className="text-muted-foreground">
-                  Track your milestones and earn rewards for your accomplishments.
+                Highlight your extracurricular achievements and leadership experiences beyond academics.
                 </p>
               </CardHeader>
               <CardContent>
