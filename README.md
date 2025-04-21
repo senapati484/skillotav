@@ -1,45 +1,132 @@
-# SkilloTav 🔗
+# SkillChain 🔗
 
-A decentralized platform connecting talent with opportunities through verified skill tokens. SkillChain revolutionizes recruitment by tokenizing professional credentials and enabling trust-based hiring through blockchain verification.
+### By Team Red Reckoners
+
+A revolutionary decentralized platform that transforms how individuals represent and verify their academic credentials, skills, experiences, and extracurricular achievements through blockchain tokenization.
 
 ## Demo & Presentation 🎥
 
-### Demo Walkthrough
-<div align="center">
-  <a href="https://youtu.be/Kq7hVWKGjlQ">
-    <img src="https://img.youtube.com/vi/e_tmNxhQifk/maxresdefault.jpg" alt="Demo Video" width="600">
-  </a>
-  <p>▶️ Watch Demo: <a href="https://youtu.be/e_tmNxhQifk">https://youtu.be/e_tmNxhQifk</a></p>
-</div>
+### Demo Video
+
+[![Demo Video](https://img.youtube.com/vi/e_tmNxhQifk/0.jpg)](https://www.youtube.com/watch?v=e_tmNxhQifk)
 
 ### Project Presentation
-<div align="center">
-  <a href="https://youtu.be/e_tmNxhQifk">
-    <img src="https://img.youtube.com/vi/Kq7hVWKGjlQ/maxresdefault.jpg" alt="Presentation Video" width="600">
-  </a>
-  https://img.youtube.com/vi/e_tmNxhQifk/maxresdefault.jpg
-<br>
-  Presentation : https://docs.google.com/presentation/d/12Dq0Oj026v3gLltq5JDQ2fCtwuXjH2Jul6zgQpVAAX0/edit?usp=sharing
-  <p>▶️ Watch Presentation: <a href="">https://youtu.be/Kq7hVWKGjlQ</a>https://youtu.be/Kq7hVWKGjlQ</p>
-</div>
 
-## Tech Stack 🛠️
+[![Project Presentation](https://img.youtube.com/vi/Kq7hVWKGjlQ/0.jpg)](https://www.youtube.com/watch?v=Kq7hVWKGjlQ)
 
-- **Frontend**: Next.js 14, React, TailwindCSS
-- **Styling**: Shadcn/ui components, Custom animations
-- **Authentication**: Firebase Auth
-- **Database**: Firebase Realtime Database
-- **Blockchain**: Ethereum (MetaMask integration)
-- **State Management**: React Context
-- **Fonts**: Clash Display, Satoshi
+## Problem Statement 🎯
+
+We address four major challenges in the current professional ecosystem:
+
+1. **Lack of Verified Credentials**: Academic achievements and skills often lack reliable verification
+2. **Opaque Recruitment**: Limited transparency in selection and shortlisting processes
+3. **Self-Assessment Difficulties**: Individuals struggle to gauge their professional standing
+4. **Candidate-Recruiter Mismatch**: Inefficient matching between talent and opportunities
+
+## Our Approach 💡
+
+1. Collect comprehensive user data (academic, skills, experience, extracurricular)
+2. Implement AI-powered verification and validation
+3. Convert verified achievements into colored, on-chain tokens
+4. Enable token-based candidate filtering for recruiters
+5. Provide intuitive dashboards for self-assessment and growth tracking
 
 ## Key Features 🌟
 
-- **Skill Tokenization**: Convert professional credentials into verifiable tokens
-- **Smart Matching**: AI-powered job matching based on token compatibility
-- **Blockchain Verification**: Immutable proof of credentials
-- **Interactive Dashboard**: Real-time tracking of applications and opportunities
-- **Profile Analysis**: Resume and GitHub integration for comprehensive skill assessment
+### 🎓 Academic Credentials
+
+- Transform academic achievements into secure, verifiable digital credentials
+- Global recognition and instant verification
+- Blockchain-backed security
+
+### ✅ Skill Verification
+
+- AI-powered skill validation
+- Industry expert verification system
+- Real-time skill assessment
+
+### 🧩 Smart Recruitment
+
+- Token-based filtering
+- Seamless opportunity matching
+- Transparent selection process
+
+### 🔐 Blockchain Security
+
+- Immutable credential records
+- Tamper-proof verification
+- Decentralized trust system
+
+### 🌍 Global Recognition
+
+- Worldwide credential visibility
+- Cross-border opportunity access
+- Standardized skill representation
+
+### 🧠 Intelligent Matching
+
+- AI-powered role matching
+- Verified credential filtering
+- Smart candidate discovery
+
+## Tech Stack 🛠️
+
+### Frontend
+
+- **Framework**: Next.js 14
+- **Styling**: TailwindCSS, Shadcn/ui components
+- **UI/UX**: Custom animations, Responsive design
+- **Fonts**: Clash Display, Satoshi
+
+### Backend
+
+- **Server**: Node.js
+- **Authentication**: Firebase Auth
+- **Database**: Firebase Realtime Database
+
+### Blockchain
+
+- **Smart Contracts**: Solidity (ERC-1155)
+- **Storage**: IPFS
+- **Integration**: Ethers.js
+- **Wallet**: MetaMask integration
+
+### AI & Verification
+
+- **Model**: Gemini-2.0-flash
+- **Integration**: Custom AI verification pipeline
+
+## Future Roadmap 🚀
+
+### Phase 1: MVP Launch
+
+- Basic tokenization functionality
+- Recruiter filtering system
+- Initial platform deployment
+
+### Phase 2: Enhanced Tokens
+
+- Intensity-based token implementation
+- 2-Dimensional token system
+- Advanced matching algorithms
+
+### Phase 3: AI Integration
+
+- Automated screening tests
+- Merit-based token distribution
+- Enhanced verification systems
+
+### Phase 4: Governance
+
+- On-chain governance implementation
+- DAO-based validation
+- Community-driven development
+
+### Phase 5: Platform Integration
+
+- LinkedIn integration
+- GitHub synchronization
+- Global career platform connections
 
 ## Project Structure 📁
 
@@ -63,12 +150,14 @@ src/
 
 1. Clone the repository
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
    Create a `.env.local` file with:
+
    ```
    NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -81,26 +170,22 @@ src/
    npm run dev
    ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Development 👨‍💻
-
-- Pages auto-update as you edit
-- Uses Next.js App Router for optimal performance
-- Implements best practices for Web3 integration
-- Responsive design for all devices
-
-## Learn More 📚
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [TailwindCSS Documentation](https://tailwindcss.com/docs)
-- [Ethereum Web3 Documentation](https://web3js.readthedocs.io/)
-
-## Deploy 🚀
-
-Deploy easily using [Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme), the platform from the creators of Next.js.
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## Contributing 🤝
 
-Contributions are welcome! Please read our contributing guidelines and submit pull requests to our repository.
+We welcome contributions! Please read our contributing guidelines before submitting pull requests.
+
+## Team Red Reckoners 👥
+
+Our talented team brings together expertise across different domains:
+
+- **Arko Kundu** - Backend & AI/ML
+- **Samya Haldar** - Web3 & Presentation
+- **Sayan Senapati** - Frontend & Backend & UI/UX
+
+Created with ❤️ by Team Red Reckoners
+
+---
+
+For more information, contact the team or visit our documentation.
