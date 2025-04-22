@@ -1,4 +1,4 @@
-# SkillChain 🔗
+# Skillotav 🔗
 
 ### By Team Red Reckoners
 
