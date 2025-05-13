@@ -1,7 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import mammoth from "mammoth";
-import cheerio from "cheerio";
-
+import * as cheerio from 'cheerio';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const MAX_RETRIES = 2;
