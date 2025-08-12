@@ -1,5 +1,4 @@
 
-https://github.com/user-attachments/assets/85da5fec-bee1-43f2-ac56-61d7f7896076
 # Skillotav 🔗
 
 ### By Team Red Reckoners
