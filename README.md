@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/85da5fec-bee1-43f2-ac56-61d7f7896076
 # Skillotav 🔗
 
 ### By Team Red Reckoners
@@ -8,11 +10,11 @@ A revolutionary decentralized platform that transforms how individuals represent
 
 ### Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/e_tmNxhQifk/0.jpg)](https://www.youtube.com/watch?v=e_tmNxhQifk)
+https://github.com/user-attachments/assets/9432e43a-4d0c-498a-a5e7-25869783c890
 
 ### Project Presentation
 
-[![Project Presentation](https://img.youtube.com/vi/Kq7hVWKGjlQ/0.jpg)](https://www.youtube.com/watch?v=Kq7hVWKGjlQ)
+https://github.com/user-attachments/assets/1583c924-2780-4dc1-a13c-c319d177694e
 
 ## Problem Statement 🎯
 
